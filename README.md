@@ -1,5 +1,11 @@
-# Plane reconstruction from lines
+# Plane reconstruction from 3D lines
 
-### Linear Fitting in Parameter Space
+Input: 3D lines set
 
-### Parameter Estimation of Probabilistic Model
+Output: Planes fitting lines
+
+It can be resolved as a clustering problem
+
+Algorithm Detail: like GMM(Gaussian Mixture Model), using Bayes theorem, assume
+the probablity of lines is decided by probability of planes and conditional 
+probability of lines giving plane

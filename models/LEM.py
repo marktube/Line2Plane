@@ -98,8 +98,9 @@ class LEM:
         :param vertices: get vertices coordinates from the set
         :return: null
         '''
-        #todo set condition to end iteration
+        print("iteration times:")
         for i in range(times):
             response=self.expect(lines, vertices)
             if(self.maximum(response,lines,vertices)<0.00001):
                 break
+            print(i+1)

@@ -317,7 +317,7 @@ class LScene:
         model.iter(10,self.lines,self.vertices)
         cluster_count = cluster_count * 3
         for j in range(cluster_count):
-            tmp = LGeometry.LPlane(model.f_v[j],model.f_n[j])
+            tmp = LGeometry.LPlane(model.f_v[j], model.f_n[j])
             self.planes.append(tmp)
         response=model.expect(self.lines, self.vertices)
         for i in range(len(self.lines)):
