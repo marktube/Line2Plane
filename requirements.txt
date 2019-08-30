@@ -1,0 +1,4 @@
+freeglut
+pyopengl
+pyopengl_accelerate
+numpy
