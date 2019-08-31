@@ -24,6 +24,9 @@ class LLine:
     def getVertexCoordinateEnd(self, vertices):
         return vertices[self.id2].getCoordinate()
 
+    def getVidSet(self):
+        return [self.id1, self.id2]
+
 class LPlane:
     def __init__(self, point, normal):
         self.point=point

@@ -1,4 +1,3 @@
-freeglut
-pyopengl
-pyopengl_accelerate
 numpy
+matplotlib
+open3d
