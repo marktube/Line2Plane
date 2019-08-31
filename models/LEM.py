@@ -13,7 +13,7 @@ class LEM:
         '''
         self.n_f = n_f * 3
         self.p_f = np.ones(self.n_f)/self.n_f
-        self.sigma = np.ones(self.n_f)*2
+        self.sigma = np.ones(self.n_f)*math.sqrt(np.sum((limit_max-limit_min)**2))/(n_f*math.sqrt(3))
         self.f_v = np.empty([3,n_f])
         tmp = np.zeros([3, self.n_f])
         for j in range(3):
