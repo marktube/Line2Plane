@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1f102ed4-8ff0-47e6-a04b-7189e4056003" name="Default Changelist" comment="set the initial variance value as max_dis/n_f">
+    <list default="true" id="1f102ed4-8ff0-47e6-a04b-7189e4056003" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/LEM.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/LEM.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/LGeometry.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/LGeometry.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/LScene.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/LScene.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -116,7 +118,7 @@
       <workItem from="1565939299919" duration="21205000" />
       <workItem from="1566542840056" duration="14740000" />
       <workItem from="1566783426688" duration="97856000" />
-      <workItem from="1567218316312" duration="15416000" />
+      <workItem from="1567218316312" duration="34334000" />
     </task>
     <task id="LOCAL-00001" summary="Need to set initial value to get better result">
       <created>1567149446325</created>
@@ -132,7 +134,14 @@
       <option name="project" value="LOCAL" />
       <updated>1567232854005</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="set the initial variance value as max_dis/(sqrt(3)*n_f)">
+      <created>1567242686956</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1567242686956</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -154,14 +163,15 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Need to set initial value to get better result" />
     <MESSAGE value="Change the display of result by using open3d API" />
-    <option name="LAST_COMMIT_MESSAGE" value="Change the display of result by using open3d API" />
+    <MESSAGE value="set the initial variance value as max_dis/(sqrt(3)*n_f)" />
+    <option name="LAST_COMMIT_MESSAGE" value="set the initial variance value as max_dis/(sqrt(3)*n_f)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/models/LScene.py</url>
-          <line>109</line>
+          <line>148</line>
           <option name="timeStamp" value="38" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -174,10 +184,15 @@
           <line>75</line>
           <option name="timeStamp" value="41" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main.py</url>
+          <line>9</line>
+          <option name="timeStamp" value="42" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Line2Plane$Line2Plane.coverage" NAME="Line2Plane Coverage Results" MODIFIED="1567151144440" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Line2Plane$Line2Plane.coverage" NAME="Line2Plane Coverage Results" MODIFIED="1567413148142" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

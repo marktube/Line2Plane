@@ -6,5 +6,5 @@ import LScene
 
 test=LScene.LScene()
 test.readObjFile(r'E:\Workspace\Line2Plane\data\line_segments_3d_clustered_allpics_11_5_18.obj')
-test.Cluster(7)
+test.initPlaneSet()
 test.drawScene()

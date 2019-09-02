@@ -73,7 +73,7 @@ class LEM:
                 dis1 = v1-self.f_v[j]
                 dis2 = v2-self.f_v[j]
                 sqare_error[j] += response[i][j]*(np.dot(dis1,self.f_n[j])**2+np.dot(dis2,self.f_n[j])**2)
-                covariance[j] += response[i][j]*(np.multiply(np.mat(dis1).T,np.mat(dis1))+np.multiply(np.mat(dis2).T,np.mat(dis2)))
+                covariance[j] += response[i][j]*(np.multiply(np.mat(dis1),np.mat(dis1).T)+np.multiply(np.mat(dis2),np.mat(dis2).T))
                 next_f_v[j] += response[i][j]*(v1+v2)
 
         resdu = 0
