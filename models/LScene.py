@@ -98,16 +98,18 @@ class LScene:
 
     def PLdistance(self, line_id, plane_id):
         if len(self.planes[plane_id].members_id)>1:
-            pdis=np.array(self.lines[line_id].getDirection(self.vertices))
-
-            dis = np.dot(pdis, self.planes[plane_id].normal)
+            pdis = self.lines[line_id].getDirection(self.vertices)
+            pdis = pdis/np.sqrt(np.sum(pdis**2))
+            normal = self.planes[plane_id].normal
+            dis = np.dot(pdis, normal)
             return dis
         else:
             line_id2 = self.planes[plane_id].members_id[0]
             normal = np.cross(np.array(self.lines[line_id].getDirection(self.vertices)),np.array(self.lines[line_id2].getDirection(self.vertices)))
-            normal = normal / np.sum(normal ** 2) #normalize the normal
-            dis = np.abs(np.dot(np.array(self.lines[line_id].getVertexCoordinateStart(self.vertices))-
-                                np.array(self.lines[line_id2].getVertexCoordinateStart(self.vertices)) , normal))
+            normal = normal / np.sqrt(np.sum(normal ** 2)) #normalize the normal
+            pdis = np.array(self.lines[line_id].getVertexCoordinateStart(self.vertices))-np.array(self.lines[line_id2].getVertexCoordinateStart(self.vertices))
+            pdis = pdis / np.sqrt(np.sum(pdis ** 2))
+            dis = np.abs(np.dot(pdis, normal))
             return dis
 
     def initPlaneSet(self):
@@ -121,21 +123,23 @@ class LScene:
                         min_dis=dis
                         min_index=j
                 #set limit
-                if min_dis > 2:
+                if min_dis > 0.08:
                     self.initPlaneWithLine(i)
                 else:
-                    if len(self.planes[min_index].members_id)==1:
-                        v1 = np.array(self.lines[i].getVertexCoordinateStart(self.vertices))
-                        v2 = np.array(self.lines[i].getVertexCoordinateEnd(self.vertices))
-                        self.planes[min_index].bundleAdjustment(self.lines, self.vertices)
                     self.planes[min_index].members_id.append(i)
+                    if len(self.planes[min_index].members_id)==2:
+                        self.planes[min_index].bundleAdjustment(self.lines, self.vertices)
+                    else:
+                        v1 = self.lines[i].getVertexCoordinateStart(self.vertices)
+                        v2 = self.lines[i].getVertexCoordinateEnd(self.vertices)
+                        self.planes[min_index].incrementalAdjustment(v1, v2)
             else:
                 self.initPlaneWithLine(i)
 
     # cluster lines
     def Cluster(self, cluster_count):
         model=LEM.LEM(cluster_count, self.min_coord, self.max_coord)
-        model.iter(15,self.lines,self.vertices)
+        model.iter(10,self.lines,self.vertices)
         cluster_count = cluster_count * 3
         for j in range(cluster_count):
             tmp = LGeometry.LPlane(model.f_v[j], model.f_n[j])
