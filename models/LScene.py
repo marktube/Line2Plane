@@ -89,53 +89,6 @@ class LScene:
         line_set.colors = o3d.utility.Vector3dVector(colors)
         o3d.visualization.draw_geometries([line_set])
 
-    def initPlaneWithLine(self, line_id):
-        v1 = np.array(self.lines[line_id].getVertexCoordinateStart(self.vertices))
-        v2 = np.array(self.lines[line_id].getVertexCoordinateEnd(self.vertices))
-        p = LGeometry.LPlane((v1+v2)/2, np.array([0, 0, 0]))
-        p.members_id.append(line_id)
-        self.planes.append(p)
-
-    def PLdistance(self, line_id, plane_id):
-        if len(self.planes[plane_id].members_id)>1:
-            pdis = self.lines[line_id].getDirection(self.vertices)
-            pdis = pdis/np.sqrt(np.sum(pdis**2))
-            normal = self.planes[plane_id].normal
-            dis = np.abs(np.dot(pdis, normal))
-            return dis
-        else:
-            line_id2 = self.planes[plane_id].members_id[0]
-            normal = np.cross(np.array(self.lines[line_id].getDirection(self.vertices)),np.array(self.lines[line_id2].getDirection(self.vertices)))
-            normal = normal / np.sqrt(np.sum(normal ** 2)) #normalize the normal
-            pdis = np.array(self.lines[line_id].getVertexCoordinateStart(self.vertices))-np.array(self.lines[line_id2].getVertexCoordinateStart(self.vertices))
-            pdis = pdis / np.sqrt(np.sum(pdis ** 2))
-            dis = np.abs(np.dot(pdis, normal))
-            return dis
-
-    def initPlaneSet(self):
-        for i in range(len(self.lines)):
-            if self.planes:
-                min_dis=self.PLdistance(i,0)
-                min_index=0
-                for j in range(1, len(self.planes)):
-                    dis = self.PLdistance(i,j)
-                    if dis < min_dis:
-                        min_dis=dis
-                        min_index=j
-                #set limit
-                if min_dis > 0.3:
-                    self.initPlaneWithLine(i)
-                else:
-                    self.planes[min_index].members_id.append(i)
-                    if len(self.planes[min_index].members_id)==2:
-                        self.planes[min_index].bundleAdjustment(self.lines, self.vertices)
-                    else:
-                        v1 = self.lines[i].getVertexCoordinateStart(self.vertices)
-                        v2 = self.lines[i].getVertexCoordinateEnd(self.vertices)
-                        self.planes[min_index].incrementalAdjustment(v1, v2)
-            else:
-                self.initPlaneWithLine(i)
-
     # cluster lines
     def Cluster(self, cluster_count):
         model=LEM.LEM(cluster_count, self.min_coord, self.max_coord)
