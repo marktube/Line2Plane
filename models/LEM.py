@@ -85,7 +85,7 @@ class LEM:
             self.p_f[j]=new_pf
             self.f_v[j]=next_f_v[j]/(2*s_r)
             w, v=np.linalg.eig(covariance[j])
-            self.f_n[j]=v[np.argmin(w)]
+            self.f_n[j]=v[:, np.argmin(w)]
         return resdu
 
 

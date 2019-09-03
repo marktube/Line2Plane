@@ -5,6 +5,6 @@ import LScene
 
 
 test=LScene.LScene()
-test.readObjFile(r'E:\Workspace\Line2Plane\data\line_segments_3d_clustered_allpics_11_5_18.obj')
-test.initPlaneSet()
+test.readObjFile(r'E:\Workspace\Line2Plane\data\DJI_cut.obj')
+test.Cluster(19)
 test.drawScene()

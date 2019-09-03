@@ -52,7 +52,7 @@ class LPlane:
         self.point=mean / (2*len(self.members_id))
         cov = self.corr - np.matmul(np.mat(self.point).T, np.mat(mean))
         w, v = np.linalg.eig(cov)
-        self.normal = v[np.argmin(w)].getA()[0]
+        self.normal = v[:, np.argmin(w)].getA()
 
     def incrementalAdjustment(self, v1, v2):
         sz = len(self.members_id)
@@ -62,4 +62,4 @@ class LPlane:
         self.corr += np.multiply(np.mat(v2), np.mat(v2).T)
         cov = self.corr-np.matmul(np.mat(self.point).T, np.mat(tmp))
         w, v = np.linalg.eig(cov)
-        self.normal = v[np.argmin(w)].getA()[0]
+        self.normal = v[:, np.argmin(w)].getA()
