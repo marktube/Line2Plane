@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1f102ed4-8ff0-47e6-a04b-7189e4056003" name="Default Changelist" comment="when response have multiple max value, add line to these plane's members_id">
+    <list default="true" id="1f102ed4-8ff0-47e6-a04b-7189e4056003" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/LEM.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/LEM.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/LScene.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/LScene.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -130,7 +128,7 @@
       <workItem from="1568018519553" duration="8500000" />
       <workItem from="1568082467628" duration="9873000" />
       <workItem from="1568106538511" duration="24212000" />
-      <workItem from="1568252710878" duration="10032000" />
+      <workItem from="1568252710878" duration="12712000" />
     </task>
     <task id="LOCAL-00001" summary="Need to set initial value to get better result">
       <created>1567149446325</created>
@@ -181,7 +179,14 @@
       <option name="project" value="LOCAL" />
       <updated>1567494537526</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="when response have multiple max value, we add line id to these planes' members_id">
+      <created>1568277968197</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1568277968197</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -208,7 +213,8 @@
     <MESSAGE value="eigen value error call, need modification" />
     <MESSAGE value="fix eigen call bug" />
     <MESSAGE value="remove codes that may have error" />
-    <option name="LAST_COMMIT_MESSAGE" value="remove codes that may have error" />
+    <MESSAGE value="when response have multiple max value, we add line id to these planes' members_id" />
+    <option name="LAST_COMMIT_MESSAGE" value="when response have multiple max value, we add line id to these planes' members_id" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
