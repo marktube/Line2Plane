@@ -4,7 +4,13 @@ sys.path.append(r'E:\Workspace\Line2Plane\models')
 import LScene
 
 
+input_file=r'E:\Workspace\Line2Plane\data\cube.obj'
+output_file=input_file[:-3]+"vg"
+
 test=LScene.LScene()
-test.readObjFile(r'E:\Workspace\Line2Plane\data\DJI_cut.obj')
-test.Cluster(19)
+test.readObjFile(input_file)
+test.Cluster(2)
 test.drawScene()
+
+print("writing output file")
+test.saveSceneAsVG(output_file)

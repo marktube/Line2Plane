@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1f102ed4-8ff0-47e6-a04b-7189e4056003" name="Default Changelist" comment="">
+    <list default="true" id="1f102ed4-8ff0-47e6-a04b-7189e4056003" name="Default Changelist" comment="when response have multiple max value, add line to these plane's members_id">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/LEM.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/LEM.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/LGeometry.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/LGeometry.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/LScene.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/LScene.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -44,7 +43,16 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="F:/CDSelector" />
-    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="settings.editor.selected.configurable" value="pyconsole" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings module-name="Line2Plane" is-module-sdk="true">
+        <option name="myUseModuleSdk" value="true" />
+        <option name="myModuleName" value="Line2Plane" />
+      </console-settings>
+    </option>
+    <option name="myIpythonEnabled" value="false" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -117,7 +125,12 @@
       <workItem from="1565939299919" duration="21205000" />
       <workItem from="1566542840056" duration="14740000" />
       <workItem from="1566783426688" duration="97856000" />
-      <workItem from="1567218316312" duration="54966000" />
+      <workItem from="1567218316312" duration="57029000" />
+      <workItem from="1567499840730" duration="3725000" />
+      <workItem from="1568018519553" duration="8500000" />
+      <workItem from="1568082467628" duration="9873000" />
+      <workItem from="1568106538511" duration="24212000" />
+      <workItem from="1568252710878" duration="10032000" />
     </task>
     <task id="LOCAL-00001" summary="Need to set initial value to get better result">
       <created>1567149446325</created>
@@ -154,7 +167,21 @@
       <option name="project" value="LOCAL" />
       <updated>1567475561554</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="fix eigen call bug">
+      <created>1567494373421</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1567494373421</updated>
+    </task>
+    <task id="LOCAL-00007" summary="remove codes that may have error">
+      <created>1567494537526</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1567494537526</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -179,14 +206,16 @@
     <MESSAGE value="set the initial variance value as max_dis/(sqrt(3)*n_f)" />
     <MESSAGE value="tmp version" />
     <MESSAGE value="eigen value error call, need modification" />
-    <option name="LAST_COMMIT_MESSAGE" value="eigen value error call, need modification" />
+    <MESSAGE value="fix eigen call bug" />
+    <MESSAGE value="remove codes that may have error" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove codes that may have error" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/models/LScene.py</url>
-          <line>152</line>
+          <line>107</line>
           <option name="timeStamp" value="38" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -195,24 +224,19 @@
           <option name="timeStamp" value="39" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/models/LEM.py</url>
-          <line>75</line>
-          <option name="timeStamp" value="41" />
+          <url>file://$PROJECT_DIR$/models/LScene.py</url>
+          <line>25</line>
+          <option name="timeStamp" value="42" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/models/LScene.py</url>
-          <line>104</line>
-          <option name="timeStamp" value="51" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/models/LScene.py</url>
-          <line>112</line>
-          <option name="timeStamp" value="52" />
+          <line>103</line>
+          <option name="timeStamp" value="43" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Line2Plane$Line2Plane.coverage" NAME="Line2Plane Coverage Results" MODIFIED="1567478694853" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Line2Plane$Line2Plane.coverage" NAME="Line2Plane Coverage Results" MODIFIED="1568276973291" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

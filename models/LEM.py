@@ -101,6 +101,6 @@ class LEM:
         print("iteration times:")
         for i in range(times):
             response=self.expect(lines, vertices)
-            if(self.maximum(response,lines,vertices)<0.00001):
+            if(self.maximum(response,lines,vertices)<0.000001):
                 break
             print(i+1)

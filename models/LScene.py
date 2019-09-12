@@ -92,15 +92,59 @@ class LScene:
     # cluster lines
     def Cluster(self, cluster_count):
         model=LEM.LEM(cluster_count, self.min_coord, self.max_coord)
-        model.iter(80,self.lines,self.vertices)
+        model.iter(50,self.lines,self.vertices)
         cluster_count = cluster_count * 3
         for j in range(cluster_count):
             tmp = LGeometry.LPlane(model.f_v[j], model.f_n[j])
             self.planes.append(tmp)
         response=model.expect(self.lines, self.vertices)
         for i in range(len(self.lines)):
-            id = np.argmax(response[i])
-            self.planes[id].members_id.append(i)
+            idx = np.where(response[i]==response[i].max())
+            idx = idx[0]
+            for id in idx:
+                self.planes[id].members_id.append(i)
         #drop empty face
         self.planes = [p for p in self.planes if len(p.members_id)!=0]
         print('Filter done')
+
+    def saveSceneAsVG(self, filePath):
+        fo = open(filePath, "w")
+
+        fo.write("num_points: %d\n"%len(self.vertices))
+        for v in self.vertices:
+            fo.write("%f %f %f "%(v.x,v.y,v.z))
+        fo.write("\n")
+
+        candicate_colors = get_colors(len(self.planes))
+        colors=np.zeros([len(self.vertices),3])
+        normals=np.zeros([len(self.vertices),3])
+        for j in range(len(self.planes)):
+            for l in self.planes[j].members_id:
+                normals[self.lines[l].id1]=self.planes[j].normal
+                normals[self.lines[l].id2]=self.planes[j].normal
+                colors[self.lines[l].id1]=candicate_colors[j]
+                colors[self.lines[l].id2]=candicate_colors[j]
+
+        fo.write("num_colors: %d\n" % len(self.vertices))
+        for i in range(len(self.vertices)):
+            fo.write("%f %f %f "%(colors[i][0],colors[i][1],colors[i][2]))
+        fo.write("\n")
+
+        fo.write("num_normals: %d\n" % len(self.vertices))
+        for i in range(len(self.vertices)):
+            fo.write("%f %f %f " % (normals[i][0], normals[i][1], normals[i][2]))
+        fo.write("\n")
+
+        fo.write("num_groups: %d\n" % len(self.planes))
+        for i in range(len(self.planes)):
+            fo.write("group_type: 0\n")
+            fo.write("num_group_parameters: 4\n")
+            fo.write("group_parameters: %f %f %f %f\n"%(self.planes[i].normal[0], self.planes[i].normal[1],
+                                                        self.planes[i].normal[2], -np.dot(self.planes[i].normal, self.planes[i].point)))
+            fo.write("group_label: unknown\n")
+            fo.write("group_color: %f %f %f\n"%(candicate_colors[i]))
+            fo.write("group_num_points: %d\n"%(2*len(self.planes[i].members_id)))
+            for j in self.planes[i].members_id:
+                fo.write("%d %d "%(self.lines[j].id1,self.lines[j].id2))
+            fo.write("\n")
+            fo.write("num_children: 0\n")
