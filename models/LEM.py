@@ -31,6 +31,8 @@ class LEM:
         :param f_j: face id
         :return: posterior probability
         '''
+        if self.sigma[f_j]==0:
+            return 0
         dis=-(np.dot((v1-self.f_v[f_j]),self.f_n[f_j])**2+np.dot((v2-self.f_v[f_j]),self.f_n[f_j])**2)/(2*self.sigma[f_j]**2)
         return  self.p_f[f_j]/(math.sqrt(2*math.pi)*self.sigma[f_j])*math.exp(dis)
 
@@ -77,8 +79,13 @@ class LEM:
                 next_f_v[j] += response[i][j]*(v1+v2)
 
         resdu = 0
+        extra_id = []
         for j in range(self.n_f):
             s_r=np.sum(response[:,j])
+            #drop plane if response too small
+            if s_r == 0:
+                extra_id.append(j)
+                continue
             self.sigma[j]=math.sqrt(sqare_error[j]/s_r)
             new_pf=s_r/len(lines)
             resdu += (self.p_f[j]-new_pf)**2
@@ -86,6 +93,11 @@ class LEM:
             self.f_v[j]=next_f_v[j]/(2*s_r)
             w, v=np.linalg.eig(covariance[j])
             self.f_n[j]=v[:, np.argmin(w)]
+        if len(extra_id):
+            self.p_f = [self.p_f[i] for i in range(self.n_f) if i not in extra_id]
+            self.f_v = [self.f_v[i] for i in range(self.n_f) if i not in extra_id]
+            self.f_n = [self.f_n[i] for i in range(self.n_f) if i not in extra_id]
+            self.n_f -= len(extra_id)
         return resdu
 
 
