@@ -92,7 +92,7 @@ class LScene:
     # cluster lines
     def Cluster(self, cluster_count):
         model=LEM.LEM(cluster_count, self.min_coord, self.max_coord)
-        model.iter(50,self.lines,self.vertices)
+        model.iter(180,self.lines,self.vertices)
         for j in range(model.n_f):
             tmp = LGeometry.LPlane(model.f_v[j], model.f_n[j])
             self.planes.append(tmp)

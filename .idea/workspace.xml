@@ -3,8 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="1f102ed4-8ff0-47e6-a04b-7189e4056003" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/cube.vg" beforeDir="false" afterPath="$PROJECT_DIR$/data/cube.vg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/LEM.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/LEM.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/LScene.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/LScene.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -26,6 +26,9 @@
     </option>
     <expand />
     <select />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="Line2Plane" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -130,7 +133,9 @@
       <workItem from="1568018519553" duration="8500000" />
       <workItem from="1568082467628" duration="9873000" />
       <workItem from="1568106538511" duration="24212000" />
-      <workItem from="1568252710878" duration="49542000" />
+      <workItem from="1568252710878" duration="49714000" />
+      <workItem from="1568796313496" duration="5514000" />
+      <workItem from="1568858642583" duration="9627000" />
     </task>
     <task id="LOCAL-00001" summary="Need to set initial value to get better result">
       <created>1567149446325</created>
@@ -195,7 +200,14 @@
       <option name="project" value="LOCAL" />
       <updated>1568282723319</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="resolve problem divided by zero">
+      <created>1568793567780</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1568793567780</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -224,7 +236,8 @@
     <MESSAGE value="remove codes that may have error" />
     <MESSAGE value="when response have multiple max value, we add line id to these planes' members_id" />
     <MESSAGE value="add result vg to git, this version can get better 3d model by polyfit" />
-    <option name="LAST_COMMIT_MESSAGE" value="add result vg to git, this version can get better 3d model by polyfit" />
+    <MESSAGE value="resolve problem divided by zero" />
+    <option name="LAST_COMMIT_MESSAGE" value="resolve problem divided by zero" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
