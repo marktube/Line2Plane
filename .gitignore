@@ -1,0 +1,5 @@
+.idea*
+*.pyc
+notebook*
+data/longgang*
+*.vg

@@ -79,10 +79,12 @@ class LScene:
         colors = []
         lines = []
         candicate_colors=get_colors(len(self.planes))
+        np.random.seed(7)
+        shuffled_id = np.random.permutation(len(self.planes))
         for j in range(len(candicate_colors)):
             for lid in self.planes[j].members_id:
                 lines.append(self.lines[lid].getVidSet())
-                colors.append(candicate_colors[j])
+                colors.append(candicate_colors[shuffled_id[j]])
         line_set = o3d.geometry.LineSet()
         line_set.points = o3d.utility.Vector3dVector(points)
         line_set.lines = o3d.utility.Vector2iVector(lines)
