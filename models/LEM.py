@@ -26,15 +26,20 @@ class LEM:
     def posterior(self,v1,v2,f_j):
         '''
         calculate posterior
-        :param v1: vertex which line start
-        :param v2: vertex which line end
+        :param v1: vertex which the line segment starts
+        :param v2: vertex which the line segment ends
         :param f_j: face id
         :return: posterior probability
         '''
         if self.sigma[f_j]==0:
             return 0
         dis=-(np.dot((v1-self.f_v[f_j]),self.f_n[f_j])**2+np.dot((v2-self.f_v[f_j]),self.f_n[f_j])**2)/(2*self.sigma[f_j]**2)
-        return  self.p_f[f_j]/(math.sqrt(2*math.pi)*self.sigma[f_j])*math.exp(dis)
+        try:
+            ans = self.p_f[f_j]/((2*math.pi)*self.sigma[f_j]**2)*math.exp(dis)
+        except OverflowError:
+            print('Overflow error: dis=%f'%dis)
+            ans = 0
+        return  ans
 
     def expect(self, lines, vertices):
         '''
@@ -83,7 +88,7 @@ class LEM:
         for j in range(self.n_f):
             s_r=np.sum(response[:,j])
             #drop plane if response too small
-            if s_r == 0:
+            if s_r <= 0:
                 extra_id.append(j)
                 continue
             self.sigma[j]=math.sqrt(sqare_error[j]/s_r)

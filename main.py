@@ -4,12 +4,12 @@ sys.path.append('../models')
 import LScene
 
 
-input_file='data/art2_cut.obj'
+input_file='data/timber_house_cut.obj'
 output_file=input_file[:-3]+"vg"
 
 test=LScene.LScene()
 test.readObjFile(input_file)
-test.Cluster(15)
+test.Cluster(19)
 test.drawScene()
 
 print("writing output file")
