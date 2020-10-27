@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1f102ed4-8ff0-47e6-a04b-7189e4056003" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/Line2Plane.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Line2Plane.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/LEM.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/LEM.py" afterDir="false" />
-    </list>
+    <list default="true" id="1f102ed4-8ff0-47e6-a04b-7189e4056003" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -167,7 +161,7 @@
       <workItem from="1602733476504" duration="1106000" />
       <workItem from="1602812118661" duration="3605000" />
       <workItem from="1603373505171" duration="2228000" />
-      <workItem from="1603438563152" duration="16571000" />
+      <workItem from="1603438563152" duration="16862000" />
     </task>
     <task id="LOCAL-00001" summary="Need to set initial value to get better result">
       <created>1567149446325</created>
@@ -246,7 +240,14 @@
       <option name="project" value="LOCAL" />
       <updated>1603438668647</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="add overflow exception&#10;modify posterior parameter&#10;reconstruct timber house set cluster/3=19">
+      <created>1603811230829</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1603811230829</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -276,7 +277,8 @@
     <MESSAGE value="when response have multiple max value, we add line id to these planes' members_id" />
     <MESSAGE value="add result vg to git, this version can get better 3d model by polyfit" />
     <MESSAGE value="resolve problem divided by zero" />
-    <option name="LAST_COMMIT_MESSAGE" value="resolve problem divided by zero" />
+    <MESSAGE value="add overflow exception&#10;modify posterior parameter&#10;reconstruct timber house set cluster/3=19" />
+    <option name="LAST_COMMIT_MESSAGE" value="add overflow exception&#10;modify posterior parameter&#10;reconstruct timber house set cluster/3=19" />
   </component>
   <component name="WindowStateProjectService">
     <state x="418" y="211" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1602733872804">
