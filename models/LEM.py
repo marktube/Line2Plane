@@ -91,7 +91,7 @@ class LEM:
             if s_r <= 0:
                 extra_id.append(j)
                 continue
-            self.sigma[j]=math.sqrt(sqare_error[j]/s_r)
+            self.sigma[j]=math.sqrt(sqare_error[j]/(2*s_r))
             new_pf=s_r/len(lines)
             resdu += (self.p_f[j]-new_pf)**2
             self.p_f[j]=new_pf

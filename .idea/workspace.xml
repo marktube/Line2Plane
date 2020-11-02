@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1f102ed4-8ff0-47e6-a04b-7189e4056003" name="Default Changelist" comment="" />
+    <list default="true" id="1f102ed4-8ff0-47e6-a04b-7189e4056003" name="Default Changelist" comment="add md,pptx,pdf to git">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/DJI_cut.vg" beforeDir="false" afterPath="$PROJECT_DIR$/data/DJI_cut.vg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/LEM.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/LEM.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/三维线段多平面重建.md" beforeDir="false" afterPath="$PROJECT_DIR$/三维线段多平面重建.md" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,6 +118,9 @@
       <module name="Line2Plane" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -161,7 +170,10 @@
       <workItem from="1602733476504" duration="1106000" />
       <workItem from="1602812118661" duration="3605000" />
       <workItem from="1603373505171" duration="2228000" />
-      <workItem from="1603438563152" duration="16862000" />
+      <workItem from="1603438563152" duration="18618000" />
+      <workItem from="1603859368390" duration="17096000" />
+      <workItem from="1604220121109" duration="614000" />
+      <workItem from="1604283729673" duration="4802000" />
     </task>
     <task id="LOCAL-00001" summary="Need to set initial value to get better result">
       <created>1567149446325</created>
@@ -247,7 +259,14 @@
       <option name="project" value="LOCAL" />
       <updated>1603811230829</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="add md,pptx,pdf to git">
+      <created>1603811392258</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1603811392258</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -278,7 +297,8 @@
     <MESSAGE value="add result vg to git, this version can get better 3d model by polyfit" />
     <MESSAGE value="resolve problem divided by zero" />
     <MESSAGE value="add overflow exception&#10;modify posterior parameter&#10;reconstruct timber house set cluster/3=19" />
-    <option name="LAST_COMMIT_MESSAGE" value="add overflow exception&#10;modify posterior parameter&#10;reconstruct timber house set cluster/3=19" />
+    <MESSAGE value="add md,pptx,pdf to git" />
+    <option name="LAST_COMMIT_MESSAGE" value="add md,pptx,pdf to git" />
   </component>
   <component name="WindowStateProjectService">
     <state x="418" y="211" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1602733872804">

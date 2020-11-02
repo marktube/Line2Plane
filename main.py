@@ -4,7 +4,7 @@ sys.path.append('../models')
 import LScene
 
 
-input_file='data/timber_house_cut.obj'
+input_file='data/DJI_modified.obj'
 output_file=input_file[:-3]+"vg"
 
 test=LScene.LScene()
