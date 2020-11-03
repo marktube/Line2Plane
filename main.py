@@ -9,7 +9,7 @@ output_file=input_file[:-3]+"vg"
 
 test=LScene.LScene()
 test.readObjFile(input_file)
-test.Cluster(18)
+test.Cluster(15)
 test.drawScene()
 
 print("writing output file")

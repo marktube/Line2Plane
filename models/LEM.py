@@ -13,7 +13,7 @@ class LEM:
         '''
         self.n_f = n_f * 3
         self.p_f = np.ones(self.n_f)/self.n_f
-        self.sigma = np.ones(self.n_f)*math.sqrt(np.sum((limit_max-limit_min)**2))/(n_f*math.sqrt(3))
+        self.sigma = np.ones(self.n_f)#*math.sqrt(np.sum((limit_max-limit_min)**2))/(n_f*math.sqrt(3))
         self.f_v = np.empty([3,n_f])
         tmp = np.zeros([3, self.n_f])
         for j in range(3):
@@ -31,7 +31,7 @@ class LEM:
         :param f_j: face id
         :return: posterior probability
         '''
-        if self.sigma[f_j]==0:
+        if self.sigma[f_j]<=1e-20:
             return 0
         dis=-(np.dot((v1-self.f_v[f_j]),self.f_n[f_j])**2+np.dot((v2-self.f_v[f_j]),self.f_n[f_j])**2)/(2*self.sigma[f_j]**2)
         try:
