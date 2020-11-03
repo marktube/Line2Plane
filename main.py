@@ -4,12 +4,12 @@ sys.path.append('../models')
 import LScene
 
 
-input_file='data/DJI_modified.obj'
+input_file='data/cube.obj'
 output_file=input_file[:-3]+"vg"
 
 test=LScene.LScene()
 test.readObjFile(input_file)
-test.Cluster(19)
+test.Cluster(2)
 test.drawScene()
 
 print("writing output file")

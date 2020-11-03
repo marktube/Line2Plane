@@ -91,6 +91,26 @@ class LScene:
         line_set.colors = o3d.utility.Vector3dVector(colors)
         o3d.visualization.draw_geometries([line_set])
 
+    #find max 2 posterior
+    def find_max2(self, input):
+        m_id1=-1
+        m_id2=-1
+        for i in range(len(input)):
+            if m_id1==-1:
+                m_id1=i
+            elif input[m_id1]<=input[i]:
+                m_id2=m_id1
+                m_id1=i
+            elif input[m_id2]<=input[i]:
+                m_id2=i
+        tmp = input[m_id1]-input[m_id2]
+        if m_id1==m_id2:
+            return [m_id1]
+        elif tmp<0.0000001:
+            return [m_id1,m_id2]
+        else:
+            return [m_id1]
+
     # cluster lines
     def Cluster(self, cluster_count):
         model=LEM.LEM(cluster_count, self.min_coord, self.max_coord)
@@ -100,8 +120,7 @@ class LScene:
             self.planes.append(tmp)
         response=model.expect(self.lines, self.vertices)
         for i in range(len(self.lines)):
-            idx = np.where(response[i]==response[i].max())
-            idx = idx[0]
+            idx = self.find_max2(response[i])
             for id in idx:
                 self.planes[id].members_id.append(i)
         #drop empty face
