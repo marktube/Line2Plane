@@ -4,12 +4,12 @@ sys.path.append('../models')
 import LScene
 
 
-input_file='data/cube.obj'
+input_file='data/Log-Small_line.obj'
 output_file=input_file[:-3]+"vg"
 
 test=LScene.LScene()
 test.readObjFile(input_file)
-test.Cluster(2)
+test.Cluster(18)
 test.drawScene()
 
 print("writing output file")

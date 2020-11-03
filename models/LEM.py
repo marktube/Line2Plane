@@ -56,8 +56,12 @@ class LEM:
             for j in range(self.n_f):
                 post.append(self.posterior(v1,v2,j))
             post=np.array(post)
-            post=post/np.sum(post)
-            response.append(post)
+            p_sum = np.sum(post)
+            if p_sum <= 0:
+                response.append(post)
+            else:
+                post=post/np.sum(post)
+                response.append(post)
         return np.array(response)
 
 
