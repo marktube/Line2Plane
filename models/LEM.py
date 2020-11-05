@@ -1,4 +1,8 @@
 import numpy as np
+import sys
+import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(BASE_DIR)
 import LGeometry
 import math
 
@@ -31,13 +35,13 @@ class LEM:
         :param f_j: face id
         :return: posterior probability
         '''
-        if self.sigma[f_j]<=1e-20:
+        if self.sigma[f_j]<=1e-30:
             return 0
         dis=-(np.dot((v1-self.f_v[f_j]),self.f_n[f_j])**2+np.dot((v2-self.f_v[f_j]),self.f_n[f_j])**2)/(2*self.sigma[f_j]**2)
         try:
             ans = self.p_f[f_j]/((2*math.pi)*self.sigma[f_j]**2)*math.exp(dis)
         except OverflowError:
-            print('Overflow error: dis=%f'%dis)
+            print('Overflow error: dis=%f sigma=%f p_f=%f'%(dis,self.sigma[f_j],self.p_f[f_j]))
             ans = 0
         return  ans
 
@@ -122,6 +126,6 @@ class LEM:
         print("iteration times:")
         for i in range(times):
             response=self.expect(lines, vertices)
-            if(self.maximum(response,lines,vertices)<0.000001):
+            if(self.maximum(response,lines,vertices)<1e-8):
                 break
             print(i+1)

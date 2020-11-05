@@ -1,17 +1,35 @@
 # -*- coding: utf-8 -*-
 import sys
-sys.path.append('../models')
-import LScene
+import os
+import argparse
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(BASE_DIR)
+sys.path.append(os.path.join(BASE_DIR, 'models'))
+from models.LScene import LScene
 
+parser = argparse.ArgumentParser()
+parser.add_argument('--volume', type=int, default=7, help='Volumes to use [default: volume 2]')
+parser.add_argument('--line_data', default='data/j9_line.obj', help='Line data input filepath [default: ]')
+parser.add_argument('--out', default='', help='Line data output filepath [default: {input filepath}.vg]')
+FLAGS = parser.parse_args()
 
-input_file='data/Log-Small_line.obj'
-output_file=input_file[:-3]+"vg"
+NUM_VOLUMES=FLAGS.volume
+LINE_DATA=FLAGS.line_data
+OUTPUT=FLAGS.out
+if not os.path.exists(LINE_DATA):
+    print('Error: input file not exist')
+    exit(0)
+if NUM_VOLUMES<2:
+    print('Error: volume<2')
+    exit(0)
+if not OUTPUT:
+    OUTPUT=LINE_DATA[:-3]+"vg"
 
-test=LScene.LScene()
-test.readObjFile(input_file)
-test.Cluster(15)
+test=LScene()
+test.readObjFile(LINE_DATA)
+test.Cluster(NUM_VOLUMES)
 test.drawScene()
 
 print("writing output file")
-test.saveSceneAsVG(output_file)
+test.saveSceneAsVG(OUTPUT)
 print("done")

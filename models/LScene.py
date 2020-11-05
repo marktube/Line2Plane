@@ -1,9 +1,15 @@
 # -*- coding: utf-8 -*-
-import LGeometry
-import LEM
+import sys
+import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(BASE_DIR)
 import numpy as np
 import open3d as o3d
 import colorsys
+from LGeometry import LVertex
+from LGeometry import LLine
+from LGeometry import LPlane
+import LEM
 
 def get_colors(num_colors):
     colors=[]
@@ -31,7 +37,7 @@ class LScene:
             if not values: continue
             if values[0] == 'v':
                 v = [float(x) for x in values[1:4]]
-                vx = LGeometry.LVertex(v[0],v[1],v[2])
+                vx = LVertex(v[0],v[1],v[2])
                 self.vertices.append(vx)
                 #set max and min coord
                 if self.max_coord[0]==0:
@@ -65,7 +71,7 @@ class LScene:
                 if id[1]==id[2]:
                     id[0]=id[0]-1
                     id[1]=id[1]-1
-                    self.lines.append(LGeometry.LLine(id[0], id[1]))
+                    self.lines.append(LLine(id[0], id[1]))
                 #else:
                 #todo:add other type for mesh
         f.close()
@@ -116,7 +122,7 @@ class LScene:
         model=LEM.LEM(cluster_count, self.min_coord, self.max_coord)
         model.iter(180,self.lines,self.vertices)
         for j in range(model.n_f):
-            tmp = LGeometry.LPlane(model.f_v[j], model.f_n[j])
+            tmp = LPlane(model.f_v[j], model.f_n[j])
             self.planes.append(tmp)
         response=model.expect(self.lines, self.vertices)
         for i in range(len(self.lines)):
