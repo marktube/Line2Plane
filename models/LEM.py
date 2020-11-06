@@ -35,8 +35,8 @@ class LEM:
         :param f_j: face id
         :return: posterior probability
         '''
-        if self.sigma[f_j]<=1e-30:
-            return 0
+        if self.sigma[f_j]<=1e-10:
+            self.sigma[f_j]=1e-2
         dis=-(np.dot((v1-self.f_v[f_j]),self.f_n[f_j])**2+np.dot((v2-self.f_v[f_j]),self.f_n[f_j])**2)/(2*self.sigma[f_j]**2)
         try:
             ans = self.p_f[f_j]/((2*math.pi)*self.sigma[f_j]**2)*math.exp(dis)
@@ -96,7 +96,7 @@ class LEM:
         for j in range(self.n_f):
             s_r=np.sum(response[:,j])
             #drop plane if response too small
-            if s_r <= 0:
+            if s_r <= 1e-10:
                 extra_id.append(j)
                 continue
             self.sigma[j]=math.sqrt(sqare_error[j]/(2*s_r))
@@ -105,7 +105,7 @@ class LEM:
             self.p_f[j]=new_pf
             self.f_v[j]=next_f_v[j]/(2*s_r)
             w, v=np.linalg.eig(covariance[j])
-            self.f_n[j]=v[:, np.argmin(w)]
+            self.f_n[j]=np.real(v[:, np.argmin(w)])
         if len(extra_id):
             self.p_f = [self.p_f[i] for i in range(self.n_f) if i not in extra_id]
             self.f_v = [self.f_v[i] for i in range(self.n_f) if i not in extra_id]
