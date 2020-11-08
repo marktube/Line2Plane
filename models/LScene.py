@@ -130,7 +130,7 @@ class LScene:
             for id in idx:
                 self.planes[id].members_id.append(i)
         #drop empty face
-        self.planes = [p for p in self.planes if len(p.members_id)!=0]
+        self.planes = [p for p in self.planes if len(p.members_id)>1]
         print('Filter done')
 
     def saveSceneAsVG(self, filePath):

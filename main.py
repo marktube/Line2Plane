@@ -9,9 +9,9 @@ from models.LScene import LScene
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--volume', type=int, default=19, help='Volumes to use [default: volume 2]')
-parser.add_argument('--line_data', default='data/3dstl/yellow-2_line.obj', help='Line data input filepath [default: ]')
+parser.add_argument('--line_data', default='data/timber_house_cut.obj', help='Line data input filepath [default: ]')
 parser.add_argument('--out', default='', help='Line data output filepath [default: {input filepath_[volume]}.vg]')
-parser.add_argument('--gui', default='false', help='true or false [default: false]')
+parser.add_argument('--gui', default='true', help='true or false [default: false]')
 FLAGS = parser.parse_args()
 
 NUM_VOLUMES=FLAGS.volume

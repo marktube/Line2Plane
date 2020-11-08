@@ -36,7 +36,7 @@ class LEM:
         :return: posterior probability
         '''
         if self.sigma[f_j]<=1e-10:
-            self.sigma[f_j]=1e-2
+            self.sigma[f_j]=1e-3
         dis=-(np.dot((v1-self.f_v[f_j]),self.f_n[f_j])**2+np.dot((v2-self.f_v[f_j]),self.f_n[f_j])**2)/(2*self.sigma[f_j]**2)
         try:
             ans = self.p_f[f_j]/((2*math.pi)*self.sigma[f_j]**2)*math.exp(dis)
