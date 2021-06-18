@@ -7,6 +7,18 @@ class LVertex:
         self.y=y
         self.z=z
 
+    def __add__(self,other):
+        return LVertex(self.x+other.x,self.y+other.y,self.z+other.z)
+
+    def __sub__(self,other):
+        return LVertex(self.x-other.x,self.y-other.y,self.z-other.z)
+
+    def __truediv__(self, other):
+        return LVertex(self.x/other, self.y/other, self.z/other)
+
+    def getL2Dis(self):
+        return np.sqrt(self.x**2 + self.y**2 + self.z**2)
+
     def getCoordinate(self):
         return [self.x,self.y,self.z]
 

@@ -1,86 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1f102ed4-8ff0-47e6-a04b-7189e4056003" name="Default Changelist" comment="np.real fix&#10;numerical modification&#10;add gui parse">
-      <change afterPath="$PROJECT_DIR$/test.cmd" afterDir="false" />
+    <list default="true" id="fab285d5-f442-4e24-a32c-d3ba2b08ca30" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/Line2Plane.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Line2Plane.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/other.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/other.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/DJI_cut.vg" beforeDir="false" afterPath="$PROJECT_DIR$/data/DJI_cut.vg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/LEM.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/LEM.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/LGeometry.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/LGeometry.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/LScene.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/LScene.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/目前结果.pptx" beforeDir="false" afterPath="$PROJECT_DIR$/目前结果.pptx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="DatabaseView">
-    <option name="SHOW_INTERMEDIATE" value="true" />
-    <option name="GROUP_DATA_SOURCES" value="true" />
-    <option name="GROUP_SCHEMA" value="true" />
-    <option name="GROUP_CONTENTS" value="false" />
-    <option name="SORT_POSITIONED" value="false" />
-    <option name="SHOW_EMPTY_GROUPS" value="false" />
-    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
-    <option name="HIDDEN_KINDS">
-      <set />
-    </option>
-    <expand />
-    <select />
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Python Script" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="ace5ec66b7466df7aef6540337c431504a72de78" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
-  <component name="ProjectId" id="1OlDC9jUMnn1aMy18K4CcWYYffw" />
+  <component name="ProjectId" id="1tye7YEN7hY9w1jSI9cuAFpAtC9" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="F:/CDSelector" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
-  </component>
-  <component name="PyConsoleOptionsProvider">
-    <option name="myPythonConsoleState">
-      <console-settings module-name="Line2Plane" is-module-sdk="true">
-        <option name="myUseModuleSdk" value="true" />
-        <option name="myModuleName" value="Line2Plane" />
-      </console-settings>
-    </option>
-    <option name="myIpythonEnabled" value="false" />
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/main.py" />
   </component>
   <component name="RunManager">
     <configuration name="Line2Plane" type="PythonConfigurationType" factoryName="Python">
       <module name="Line2Plane" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="E:\PyEnviroment\Line2Plane\python.exe" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/miniconda3/envs/Line2Plane/bin/python" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -118,197 +79,45 @@
       <method v="2" />
     </configuration>
   </component>
-  <component name="SvnConfiguration">
-    <configuration />
-  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="1f102ed4-8ff0-47e6-a04b-7189e4056003" name="Default Changelist" comment="" />
-      <created>1564543159271</created>
+      <changelist id="fab285d5-f442-4e24-a32c-d3ba2b08ca30" name="Default Changelist" comment="" />
+      <created>1623745592250</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1564543159271</updated>
-      <workItem from="1564543161775" duration="34089000" />
-      <workItem from="1564730205831" duration="845000" />
-      <workItem from="1564732066025" duration="8008000" />
-      <workItem from="1565939299919" duration="21205000" />
-      <workItem from="1566542840056" duration="14740000" />
-      <workItem from="1566783426688" duration="97856000" />
-      <workItem from="1567218316312" duration="57029000" />
-      <workItem from="1567499840730" duration="3725000" />
-      <workItem from="1568018519553" duration="8500000" />
-      <workItem from="1568082467628" duration="9873000" />
-      <workItem from="1568106538511" duration="24212000" />
-      <workItem from="1568252710878" duration="49714000" />
-      <workItem from="1568796313496" duration="5514000" />
-      <workItem from="1568858642583" duration="9627000" />
-      <workItem from="1604308721400" duration="56671000" />
-      <workItem from="1604562365332" duration="29319000" />
+      <updated>1623745592250</updated>
+      <workItem from="1623745598809" duration="1420000" />
+      <workItem from="1623748474835" duration="26262000" />
     </task>
-    <task id="LOCAL-00001" summary="Need to set initial value to get better result">
-      <created>1567149446325</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1567149446326</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Change the display of result by using open3d API">
-      <created>1567232854005</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1567232854005</updated>
-    </task>
-    <task id="LOCAL-00003" summary="set the initial variance value as max_dis/(sqrt(3)*n_f)">
-      <created>1567242686956</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1567242686956</updated>
-    </task>
-    <task id="LOCAL-00004" summary="tmp version">
-      <created>1567413290016</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1567413290016</updated>
-    </task>
-    <task id="LOCAL-00005" summary="eigen value error call, need modification">
-      <created>1567475561554</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1567475561554</updated>
-    </task>
-    <task id="LOCAL-00006" summary="fix eigen call bug">
-      <created>1567494373421</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1567494373421</updated>
-    </task>
-    <task id="LOCAL-00007" summary="remove codes that may have error">
-      <created>1567494537526</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1567494537526</updated>
-    </task>
-    <task id="LOCAL-00008" summary="when response have multiple max value, we add line id to these planes' members_id">
-      <created>1568277968197</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1568277968197</updated>
-    </task>
-    <task id="LOCAL-00009" summary="add result vg to git, this version can get better 3d model by polyfit">
-      <created>1568282723319</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1568282723319</updated>
-    </task>
-    <task id="LOCAL-00010" summary="resolve problem divided by zero">
-      <created>1568793567780</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1568793567780</updated>
-    </task>
-    <task id="LOCAL-00011" summary="add function find_max2">
-      <created>1604388220383</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1604388220383</updated>
-    </task>
-    <task id="LOCAL-00012" summary="resolve problem divided by zero">
-      <created>1604410216475</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1604410216475</updated>
-    </task>
-    <task id="LOCAL-00013" summary="resolve nan problem">
-      <created>1604411846325</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1604411846325</updated>
-    </task>
-    <task id="LOCAL-00014" summary="add parser">
-      <created>1604540461202</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1604540461202</updated>
-    </task>
-    <task id="LOCAL-00015" summary="np.real fix&#10;numerical modification&#10;add gui parse">
-      <created>1604650286029</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1604650286030</updated>
-    </task>
-    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
+            <State />
           </value>
         </entry>
       </map>
     </option>
   </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="Need to set initial value to get better result" />
-    <MESSAGE value="Change the display of result by using open3d API" />
-    <MESSAGE value="set the initial variance value as max_dis/(sqrt(3)*n_f)" />
-    <MESSAGE value="tmp version" />
-    <MESSAGE value="eigen value error call, need modification" />
-    <MESSAGE value="fix eigen call bug" />
-    <MESSAGE value="remove codes that may have error" />
-    <MESSAGE value="when response have multiple max value, we add line id to these planes' members_id" />
-    <MESSAGE value="add result vg to git, this version can get better 3d model by polyfit" />
-    <MESSAGE value="add function find_max2" />
-    <MESSAGE value="resolve problem divided by zero" />
-    <MESSAGE value="resolve nan problem" />
-    <MESSAGE value="add parser" />
-    <MESSAGE value="np.real fix&#10;numerical modification&#10;add gui parse" />
-    <option name="LAST_COMMIT_MESSAGE" value="np.real fix&#10;numerical modification&#10;add gui parse" />
-  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/models/LEM.py</url>
-          <line>109</line>
-          <option name="timeStamp" value="44" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <condition expression="i==60" language="Python" />
-          <url>file://$PROJECT_DIR$/models/LEM.py</url>
-          <line>128</line>
-          <option name="timeStamp" value="67" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/models/LScene.py</url>
-          <line>127</line>
-          <option name="timeStamp" value="68" />
+          <line>34</line>
+          <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Line2Plane$Line2Plane.coverage" NAME="Line2Plane Coverage Results" MODIFIED="1604665781652" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Line2Plane$Line2Plane.coverage" NAME="Line2Plane Coverage Results" MODIFIED="1623985185612" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

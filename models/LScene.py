@@ -22,11 +22,20 @@ def get_colors(num_colors):
 
 class LScene:
     def __init__(self):
-        self.vertices=[]
-        self.lines=[]
-        self.planes=[]
-        self.max_coord=np.zeros(3)
-        self.min_coord=np.zeros(3)
+        self.vertices = []
+        self.lines = []
+        self.planes = []
+        self.max_coord = np.zeros(3)
+        self.min_coord = np.zeros(3)
+        self.shift = np.zeros(3)
+        self.scale = 1
+
+    def normalize(self, coord):
+        self.shift = np.mean(coord, axis=0)
+        pc = [c - self.shift for c in coord]
+        self.scale = np.max([c.getL2Dis() for c in pc])
+        pc = [c / self.scale for c in pc]
+        return pc
 
     # read lines .obj file
     def readObjFile(self, filePath):
@@ -67,14 +76,20 @@ class LScene:
                 else:
                     self.min_coord[2] = v[2] if v[2]<self.min_coord[2] else self.min_coord[2]
             elif values[0] == 'f':
-                id = [int(x) for x in values[1:4]]
-                if id[1]==id[2]:
-                    id[0]=id[0]-1
-                    id[1]=id[1]-1
-                    self.lines.append(LLine(id[0], id[1]))
-                #else:
-                #todo:add other type for mesh
+                idx = [int(x) for x in values[1:4]]
+                if idx[1]==idx[2]:
+                    idx[0]=idx[0]-1
+                    idx[1]=idx[1]-1
+                    self.lines.append(LLine(idx[0], idx[1]))
+            elif values[0] == 'l':
+                idx = [int(x) for x in values[1:]]
+                self.lines.append(LLine(idx[0]-1, idx[1]-1))
+            #else:
+            #todo:add other type for mesh
         f.close()
+        self.vertices = self.normalize(self.vertices)
+        self.max_coord = (self.max_coord - self.shift.getCoordinate()) / self.scale
+        self.min_coord = (self.min_coord - self.shift.getCoordinate()) / self.scale
         return
 
     # draw points, lines and planes
