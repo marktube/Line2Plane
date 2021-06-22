@@ -8,7 +8,7 @@ sys.path.append(os.path.join(BASE_DIR, 'models'))
 from models.LScene import LScene
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--volume', type=int, default=9, help='Volumes to use [default: volume 2]')
+parser.add_argument('--volume', type=int, default=3, help='Volumes to use [default: volume 2]')
 parser.add_argument('--line_data', default='data/thu_ocean.obj', help='Line data input filepath [default: ]')
 parser.add_argument('--out', default='', help='Line data output filepath [default: {input filepath_[volume]}.vg]')
 parser.add_argument('--gui', default='true', help='true or false [default: false]')

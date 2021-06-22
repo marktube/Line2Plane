@@ -153,7 +153,9 @@ class LScene:
 
         fo.write("num_points: %d\n"%len(self.vertices))
         for v in self.vertices:
-            fo.write("%f %f %f "%(v.x,v.y,v.z))
+            coord = np.array(v.getCoordinate())
+            coord = coord * self.scale + np.array(self.shift.getCoordinate())
+            fo.write("%f %f %f "%(coord[0], coord[1], coord[2]))
         fo.write("\n")
 
         candicate_colors = get_colors(len(self.planes))
