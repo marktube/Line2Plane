@@ -22,20 +22,11 @@ def get_colors(num_colors):
 
 class LScene:
     def __init__(self):
-        self.vertices = []
-        self.lines = []
-        self.planes = []
-        self.max_coord = np.zeros(3)
-        self.min_coord = np.zeros(3)
-        self.shift = np.zeros(3)
-        self.scale = 1
-
-    def normalize(self, coord):
-        self.shift = np.mean(coord, axis=0)
-        pc = [c - self.shift for c in coord]
-        self.scale = np.max([c.getL2Dis() for c in pc])
-        pc = [c / self.scale for c in pc]
-        return pc
+        self.vertices=[]
+        self.lines=[]
+        self.planes=[]
+        self.max_coord=np.zeros(3)
+        self.min_coord=np.zeros(3)
 
     # read lines .obj file
     def readObjFile(self, filePath):
@@ -87,9 +78,9 @@ class LScene:
             #else:
             #todo:add other type for mesh
         f.close()
-        self.vertices = self.normalize(self.vertices)
-        self.max_coord = (self.max_coord - self.shift.getCoordinate()) / self.scale
-        self.min_coord = (self.min_coord - self.shift.getCoordinate()) / self.scale
+        #self.vertices = self.normalize(self.vertices)
+        #self.max_coord = (self.max_coord - self.shift.getCoordinate()) / self.scale
+        #self.min_coord = (self.min_coord - self.shift.getCoordinate()) / self.scale
         return
 
     # draw points, lines and planes
@@ -112,40 +103,22 @@ class LScene:
         line_set.colors = o3d.utility.Vector3dVector(colors)
         o3d.visualization.draw_geometries([line_set])
 
-    #find max 2 posterior
-    def find_max2(self, input):
-        m_id1=-1
-        m_id2=-1
-        for i in range(len(input)):
-            if m_id1==-1:
-                m_id1=i
-            elif input[m_id1]<=input[i]:
-                m_id2=m_id1
-                m_id1=i
-            elif input[m_id2]<=input[i]:
-                m_id2=i
-        tmp = input[m_id1]-input[m_id2]
-        if m_id1==m_id2:
-            return [m_id1]
-        elif tmp<0.0000001:
-            return [m_id1,m_id2]
-        else:
-            return [m_id1]
-
     # cluster lines
     def Cluster(self, cluster_count):
         model=LEM.LEM(cluster_count, self.min_coord, self.max_coord)
-        model.iter(180,self.lines,self.vertices)
-        for j in range(model.n_f):
-            tmp = LPlane(model.f_v[j], model.f_n[j])
+        model.iter(50,self.lines,self.vertices)
+        cluster_count = cluster_count * 3
+        for j in range(cluster_count):
+            tmp =                                                                                                                                                                               LPlane(model.f_v[j], model.f_n[j])
             self.planes.append(tmp)
         response=model.expect(self.lines, self.vertices)
         for i in range(len(self.lines)):
-            idx = self.find_max2(response[i])
+            idx = np.where(response[i]==response[i].max())
+            idx = idx[0]
             for id in idx:
                 self.planes[id].members_id.append(i)
         #drop empty face
-        self.planes = [p for p in self.planes if len(p.members_id)>1]
+        self.planes = [p for p in self.planes if len(p.members_id)!=0]
         print('Filter done')
 
     def saveSceneAsVG(self, filePath):
@@ -153,9 +126,7 @@ class LScene:
 
         fo.write("num_points: %d\n"%len(self.vertices))
         for v in self.vertices:
-            coord = np.array(v.getCoordinate())
-            coord = coord * self.scale + np.array(self.shift.getCoordinate())
-            fo.write("%f %f %f "%(coord[0], coord[1], coord[2]))
+            fo.write("%f %f %f "%(v.x,v.y,v.z))
         fo.write("\n")
 
         candicate_colors = get_colors(len(self.planes))

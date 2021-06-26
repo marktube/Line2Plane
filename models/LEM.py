@@ -17,7 +17,7 @@ class LEM:
         '''
         self.n_f = n_f * 3
         self.p_f = np.ones(self.n_f)/self.n_f
-        self.sigma = np.ones(self.n_f)/n_f#*math.sqrt(np.sum((limit_max-limit_min)**2))/(n_f*math.sqrt(3))
+        self.sigma = np.ones(self.n_f)*math.sqrt(np.sum((limit_max-limit_min)**2))/(n_f*math.sqrt(3))
         self.f_v = np.empty([3,n_f])
         tmp = np.zeros([3, self.n_f])
         for j in range(3):
@@ -35,15 +35,8 @@ class LEM:
         :param f_j: face id
         :return: posterior probability
         '''
-        if self.sigma[f_j]<=1e-10:
-            self.sigma[f_j]=1e-3
         dis=-(np.dot((v1-self.f_v[f_j]),self.f_n[f_j])**2+np.dot((v2-self.f_v[f_j]),self.f_n[f_j])**2)/(2*self.sigma[f_j]**2)
-        try:
-            ans = self.p_f[f_j]/((2*math.pi)*self.sigma[f_j]**2)*math.exp(dis)
-        except OverflowError:
-            print('Overflow error: dis=%f sigma=%f p_f=%f'%(dis,self.sigma[f_j],self.p_f[f_j]))
-            ans = 0
-        return  ans
+        return  self.p_f[f_j]/(math.sqrt(2*math.pi)*self.sigma[f_j])*math.exp(dis)
 
     def expect(self, lines, vertices):
         '''
@@ -60,12 +53,8 @@ class LEM:
             for j in range(self.n_f):
                 post.append(self.posterior(v1,v2,j))
             post=np.array(post)
-            p_sum = np.sum(post)
-            if p_sum <= 0:
-                response.append(post)
-            else:
-                post=post/np.sum(post)
-                response.append(post)
+            post=post/np.sum(post)
+            response.append(post)
         return np.array(response)
 
 
@@ -92,25 +81,15 @@ class LEM:
                 next_f_v[j] += response[i][j]*(v1+v2)
 
         resdu = 0
-        extra_id = []
         for j in range(self.n_f):
             s_r=np.sum(response[:,j])
-            #drop plane if response too small
-            if s_r <= 1e-10:
-                extra_id.append(j)
-                continue
-            self.sigma[j]=math.sqrt(sqare_error[j]/(2*s_r))
+            self.sigma[j]=math.sqrt(sqare_error[j]/s_r)
             new_pf=s_r/len(lines)
             resdu += (self.p_f[j]-new_pf)**2
             self.p_f[j]=new_pf
             self.f_v[j]=next_f_v[j]/(2*s_r)
             w, v=np.linalg.eig(covariance[j])
-            self.f_n[j]=np.real(v[:, np.argmin(w)])
-        if len(extra_id):
-            self.p_f = [self.p_f[i] for i in range(self.n_f) if i not in extra_id]
-            self.f_v = [self.f_v[i] for i in range(self.n_f) if i not in extra_id]
-            self.f_n = [self.f_n[i] for i in range(self.n_f) if i not in extra_id]
-            self.n_f -= len(extra_id)
+            self.f_n[j]=v[:, np.argmin(w)]
         return resdu
 
 
@@ -126,6 +105,10 @@ class LEM:
         print("iteration times:")
         for i in range(times):
             response=self.expect(lines, vertices)
-            if(self.maximum(response,lines,vertices)<1e-8):
+            if(self.maximum(response,lines,vertices)<0.000001):
                 break
-            print(i+1)
+            print('=============================iteration %d============================='%(i+1))
+            print('sigma - the standard deviation:')
+            print(self.sigma)
+            print('p_f - probability distribution of the faces:')
+            print(self.p_f)
