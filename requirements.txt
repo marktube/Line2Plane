@@ -2,3 +2,5 @@ numpy
 matplotlib
 open3d
 Pillow
+torch
+torchvision

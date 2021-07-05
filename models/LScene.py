@@ -6,9 +6,6 @@ sys.path.append(BASE_DIR)
 import numpy as np
 import open3d as o3d
 import colorsys
-from LGeometry import LVertex
-from LGeometry import LLine
-from LGeometry import LPlane
 import LEM
 
 def get_colors(num_colors):
@@ -18,147 +15,114 @@ def get_colors(num_colors):
         lightness = (50 + np.random.rand() * 10)/100.
         saturation = (90 + np.random.rand() * 10)/100.
         colors.append(colorsys.hls_to_rgb(hue, lightness, saturation))
-    return colors
+    return np.array(colors)
 
 class LScene:
     def __init__(self):
-        self.vertices=[]
-        self.lines=[]
-        self.planes=[]
-        self.max_coord=np.zeros(3)
-        self.min_coord=np.zeros(3)
+        self.vertices=None
+        self.lines=None
+        self.planes=None
+        self.cluster_id=None
+        self.max_coord=None
+        self.min_coord=None
 
     # read lines .obj file
     def readObjFile(self, filePath):
-        f=open(filePath, "r")
-        for line in f:
-            if line.startswith('#'): continue
-            values = line.split()
-            if not values: continue
-            if values[0] == 'v':
-                v = [float(x) for x in values[1:4]]
-                vx = LVertex(v[0],v[1],v[2])
-                self.vertices.append(vx)
-                #set max and min coord
-                if self.max_coord[0]==0:
-                    self.max_coord[0] = v[0]
-                else:
-                    self.max_coord[0] = v[0] if v[0]>self.max_coord[0] else self.max_coord[0]
-                if self.min_coord[0]==0:
-                    self.min_coord[0] = v[0]
-                else:
-                    self.min_coord[0] = v[0] if v[0]<self.min_coord[0] else self.min_coord[0]
-
-                if self.max_coord[1]==0:
-                    self.max_coord[1] = v[1]
-                else:
-                    self.max_coord[1] = v[1] if v[1]>self.max_coord[1] else self.max_coord[1]
-                if self.min_coord[1]==0:
-                    self.min_coord[1] = v[1]
-                else:
-                    self.min_coord[1] = v[1] if v[1]<self.min_coord[1] else self.min_coord[1]
-
-                if self.max_coord[2]==0:
-                    self.max_coord[2] = v[2]
-                else:
-                    self.max_coord[2] = v[2] if v[2]>self.max_coord[2] else self.max_coord[2]
-                if self.min_coord[2]==0:
-                    self.min_coord[2] = v[2]
-                else:
-                    self.min_coord[2] = v[2] if v[2]<self.min_coord[2] else self.min_coord[2]
-            elif values[0] == 'f':
-                idx = [int(x) for x in values[1:4]]
-                if idx[1]==idx[2]:
-                    idx[0]=idx[0]-1
-                    idx[1]=idx[1]-1
-                    self.lines.append(LLine(idx[0], idx[1]))
-            elif values[0] == 'l':
-                idx = [int(x) for x in values[1:]]
-                self.lines.append(LLine(idx[0]-1, idx[1]-1))
-            #else:
-            #todo:add other type for mesh
-        f.close()
-        #self.vertices = self.normalize(self.vertices)
-        #self.max_coord = (self.max_coord - self.shift.getCoordinate()) / self.scale
-        #self.min_coord = (self.min_coord - self.shift.getCoordinate()) / self.scale
+        vx = []
+        lidx = []
+        with open(filePath, "r") as f:
+            for line in f:
+                if line.startswith('#'): continue
+                values = line.split()
+                if not values: continue
+                if values[0] == 'v':
+                    v = [float(x) for x in values[1:4]]
+                    vx.append(v)
+                elif values[0] == 'f':
+                    idx = [int(x) for x in values[1:4]]
+                    if idx[1]==idx[2]:
+                        lidx.append([idx[0]-1, idx[1]-1])
+                elif values[0] == 'l':
+                    idx = [int(x) for x in values[1:]]
+                    lidx.append([idx[0]-1, idx[1]-1])
+                #else:
+                #todo:add other type for mesh
+        self.vertices = np.array(vx,dtype=float)
+        self.lines = np.array(lidx,dtype=int)
+        self.min_coord = np.min(self.vertices, axis=0)
+        self.max_coord = np.max(self.vertices, axis=0)
         return
+
+    def drawPoints(self,xyz):
+        pcd = o3d.geometry.PointCloud()
+        pcd.points = o3d.utility.Vector3dVector(xyz)
+        o3d.visualization.draw_geometries([pcd])
 
     # draw points, lines and planes
     def drawScene(self):
-        points = []
-        for v in self.vertices:
-            points.append(v.getCoordinate())
-        colors = []
+        '''colors = []
         lines = []
         candicate_colors=get_colors(len(self.planes))
         np.random.seed(7)
         shuffled_id = np.random.permutation(len(self.planes))
         for j in range(len(candicate_colors)):
             for lid in self.planes[j].members_id:
-                lines.append(self.lines[lid].getVidSet())
-                colors.append(candicate_colors[shuffled_id[j]])
+                colors.append(candicate_colors[shuffled_id[j]])'''
+        candicate_colors=get_colors(np.max(self.cluster_id)+1)
+        colors = candicate_colors[self.cluster_id]
         line_set = o3d.geometry.LineSet()
-        line_set.points = o3d.utility.Vector3dVector(points)
-        line_set.lines = o3d.utility.Vector2iVector(lines)
+        line_set.points = o3d.utility.Vector3dVector(self.vertices)
+        line_set.lines = o3d.utility.Vector2iVector(self.lines)
         line_set.colors = o3d.utility.Vector3dVector(colors)
         o3d.visualization.draw_geometries([line_set])
 
     # cluster lines
-    def Cluster(self, cluster_count):
-        model=LEM.LEM(cluster_count, self.min_coord, self.max_coord)
-        model.iter(50,self.lines,self.vertices)
-        cluster_count = cluster_count * 3
-        for j in range(cluster_count):
-            tmp = LPlane(model.f_v[j], model.f_n[j])
-            self.planes.append(tmp)
-        response=model.expect(self.lines, self.vertices)
-        for i in range(len(self.lines)):
-            idx = np.where(response[i]==response[i].max())
-            idx = idx[0]
-            for id in idx:
-                self.planes[id].members_id.append(i)
-        #drop empty face
-        self.planes = [p for p in self.planes if len(p.members_id)!=0]
+    def Cluster(self, volume):
+        model = LEM.LEM(volume, self.min_coord, self.max_coord)
+        p1xyz = self.vertices[self.lines[:, 0]]
+        p2xyz = self.vertices[self.lines[:, 1]]
+        self.planes, self.cluster_id = model.iter(50, p1xyz, p2xyz)
         print('Filter done')
 
     def saveSceneAsVG(self, filePath):
-        fo = open(filePath, "w")
-
-        fo.write("num_points: %d\n"%len(self.vertices))
-        for v in self.vertices:
-            fo.write("%f %f %f "%(v.x,v.y,v.z))
-        fo.write("\n")
-
-        candicate_colors = get_colors(len(self.planes))
-        colors=np.zeros([len(self.vertices),3])
-        normals=np.zeros([len(self.vertices),3])
-        for j in range(len(self.planes)):
-            for l in self.planes[j].members_id:
-                normals[self.lines[l].id1]=self.planes[j].normal
-                normals[self.lines[l].id2]=self.planes[j].normal
-                colors[self.lines[l].id1]=candicate_colors[j]
-                colors[self.lines[l].id2]=candicate_colors[j]
-
-        fo.write("num_colors: %d\n" % len(self.vertices))
-        for i in range(len(self.vertices)):
-            fo.write("%f %f %f "%(colors[i][0],colors[i][1],colors[i][2]))
-        fo.write("\n")
-
-        fo.write("num_normals: %d\n" % len(self.vertices))
-        for i in range(len(self.vertices)):
-            fo.write("%f %f %f " % (normals[i][0], normals[i][1], normals[i][2]))
-        fo.write("\n")
-
-        fo.write("num_groups: %d\n" % len(self.planes))
-        for i in range(len(self.planes)):
-            fo.write("group_type: 0\n")
-            fo.write("num_group_parameters: 4\n")
-            fo.write("group_parameters: %f %f %f %f\n"%(self.planes[i].normal[0], self.planes[i].normal[1],
-                                                        self.planes[i].normal[2], -np.dot(self.planes[i].normal, self.planes[i].point)))
-            fo.write("group_label: unknown\n")
-            fo.write("group_color: %f %f %f\n"%(candicate_colors[i]))
-            fo.write("group_num_points: %d\n"%(2*len(self.planes[i].members_id)))
-            for j in self.planes[i].members_id:
-                fo.write("%d %d "%(self.lines[j].id1,self.lines[j].id2))
+        #TODO: re-implement the function
+        return
+        with open(filePath, "w") as fo:
+            fo.write("num_points: %d\n"%len(self.vertices))
+            for i in range(self.vertices.shape[0]):
+                fo.write("%f %f %f "%(self.vertices[i][0], self.vertices[i][1], self.vertices[i][2]))
             fo.write("\n")
-            fo.write("num_children: 0\n")
+
+            candicate_colors = get_colors(len(self.planes))
+            colors=np.zeros([len(self.vertices),3])
+            normals=np.zeros([len(self.vertices),3])
+            for j in range(len(self.planes)):
+                for l in self.planes[j].members_id:
+                    normals[self.lines[l].id1]=self.planes[j].normal
+                    normals[self.lines[l].id2]=self.planes[j].normal
+                    colors[self.lines[l].id1]=candicate_colors[j]
+                    colors[self.lines[l].id2]=candicate_colors[j]
+
+            fo.write("num_colors: %d\n" % len(self.vertices))
+            for i in range(len(self.vertices)):
+                fo.write("%f %f %f "%(colors[i][0],colors[i][1],colors[i][2]))
+            fo.write("\n")
+
+            fo.write("num_normals: %d\n" % len(self.vertices))
+            for i in range(len(self.vertices)):
+                fo.write("%f %f %f " % (normals[i][0], normals[i][1], normals[i][2]))
+            fo.write("\n")
+
+            fo.write("num_groups: %d\n" % len(self.planes))
+            for i in range(len(self.planes)):
+                fo.write("group_type: 0\n")
+                fo.write("num_group_parameters: 4\n")
+                fo.write("group_parameters: %f %f %f %f\n"%(self.planes[i].normal[0], self.planes[i].normal[1],
+                                                        self.planes[i].normal[2], -np.dot(self.planes[i].normal, self.planes[i].point)))
+                fo.write("group_label: unknown\n")
+                fo.write("group_color: %f %f %f\n"%(candicate_colors[i]))
+                fo.write("group_num_points: %d\n"%(2*len(self.planes[i].members_id)))
+                for j in self.planes[i].members_id:
+                    fo.write("%d %d "%(self.lines[j].id1,self.lines[j].id2))
+                fo.write("\n")
+                fo.write("num_children: 0\n")
