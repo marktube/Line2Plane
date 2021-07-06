@@ -11,7 +11,7 @@ import LEM
 def get_colors(num_colors):
     colors=[]
     for i in np.arange(0., 360., 360. / num_colors):
-        hue = i/360.
+        hue = i / 360.
         lightness = (50 + np.random.rand() * 10)/100.
         saturation = (90 + np.random.rand() * 10)/100.
         colors.append(colorsys.hls_to_rgb(hue, lightness, saturation))
@@ -85,44 +85,42 @@ class LScene:
         print('Filter done')
 
     def saveSceneAsVG(self, filePath):
-        #TODO: re-implement the function
-        return
         with open(filePath, "w") as fo:
             fo.write("num_points: %d\n"%len(self.vertices))
             for i in range(self.vertices.shape[0]):
                 fo.write("%f %f %f "%(self.vertices[i][0], self.vertices[i][1], self.vertices[i][2]))
             fo.write("\n")
 
-            candicate_colors = get_colors(len(self.planes))
-            colors=np.zeros([len(self.vertices),3])
-            normals=np.zeros([len(self.vertices),3])
-            for j in range(len(self.planes)):
-                for l in self.planes[j].members_id:
-                    normals[self.lines[l].id1]=self.planes[j].normal
-                    normals[self.lines[l].id2]=self.planes[j].normal
-                    colors[self.lines[l].id1]=candicate_colors[j]
-                    colors[self.lines[l].id2]=candicate_colors[j]
+            candicate_colors = get_colors(np.max(self.cluster_id)+1)
+            cluster = np.zeros(len(self.vertices), dtype=int)
+            cluster[self.lines[:,0]]=self.cluster_id
+            cluster[self.lines[:,1]]=self.cluster_id
 
             fo.write("num_colors: %d\n" % len(self.vertices))
             for i in range(len(self.vertices)):
-                fo.write("%f %f %f "%(colors[i][0],colors[i][1],colors[i][2]))
+                fo.write("%f %f %f "%(candicate_colors[cluster[i]][0],candicate_colors[cluster[i]][1],
+                                      candicate_colors[cluster[i]][2]))
             fo.write("\n")
 
             fo.write("num_normals: %d\n" % len(self.vertices))
             for i in range(len(self.vertices)):
-                fo.write("%f %f %f " % (normals[i][0], normals[i][1], normals[i][2]))
+                fo.write("%f %f %f " % (self.planes[cluster[i]][0], self.planes[cluster[i]][1], self.planes[cluster[i]][2]))
             fo.write("\n")
 
             fo.write("num_groups: %d\n" % len(self.planes))
             for i in range(len(self.planes)):
                 fo.write("group_type: 0\n")
                 fo.write("num_group_parameters: 4\n")
-                fo.write("group_parameters: %f %f %f %f\n"%(self.planes[i].normal[0], self.planes[i].normal[1],
-                                                        self.planes[i].normal[2], -np.dot(self.planes[i].normal, self.planes[i].point)))
+                fo.write("group_parameters: %f %f %f %f\n"%(self.planes[i][0], self.planes[i][1],
+                                                        self.planes[i][2], self.planes[i][3]))
                 fo.write("group_label: unknown\n")
-                fo.write("group_color: %f %f %f\n"%(candicate_colors[i]))
-                fo.write("group_num_points: %d\n"%(2*len(self.planes[i].members_id)))
-                for j in self.planes[i].members_id:
-                    fo.write("%d %d "%(self.lines[j].id1,self.lines[j].id2))
+                fo.write("group_color: %f %f %f\n"%(candicate_colors[self.cluster_id[i]][0],
+                                                    candicate_colors[self.cluster_id[i]][1],
+                                                    candicate_colors[self.cluster_id[i]][2]))
+                members_id = np.where(self.cluster_id==i)
+                members_id = members_id[0]
+                fo.write("group_num_points: %d\n"%(2*len(members_id)))
+                for j in members_id:
+                    fo.write("%d %d "%(self.lines[j][0],self.lines[j][1]))
                 fo.write("\n")
                 fo.write("num_children: 0\n")

@@ -4,6 +4,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(BASE_DIR)
 import math
+import time
 import torch
 
 class LEM:
@@ -100,6 +101,7 @@ class LEM:
         :param p2xyz: another line end points coordinates
         :return: plane parameters and cluster id for each line
         '''
+        start = time.clock()
         self.line_count = p1xyz.shape[0]
         self.p1xyz = np.expand_dims(p1xyz, axis=1)
         self.p1xyz = np.repeat(self.p1xyz, self.n_f, axis=1)
@@ -115,11 +117,14 @@ class LEM:
             print(self.sigma)
             print('p_f - probability distribution of the faces:')
             print(self.p_f)'''
-        #TODO: use np.unique to drop empty planes
+        end = time.clock()
+        print('iteration used time: '+str(end - start)+'s')
         dis = self.l2p_distance()
         response = self.expect(dis)
         cluster_id = np.argmax(response, axis=1)
-        print(np.unique(cluster_id))
+        label = np.unique(cluster_id)
+        rev_dict = dict(zip(label,np.arange(len(label))))
+        cluster_id = [rev_dict[i] for i in cluster_id]
         d = -np.sum(self.f_v*self.f_n, axis=1)
         planes = np.column_stack((self.f_v, d))
-        return planes, cluster_id
+        return planes[label,:], np.array(cluster_id, dtype=int)
