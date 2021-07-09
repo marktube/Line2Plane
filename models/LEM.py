@@ -6,6 +6,7 @@ sys.path.append(BASE_DIR)
 import math
 import time
 import torch
+from progress.bar import IncrementalBar
 
 class LEM:
     def __init__(self, volume, limit_min, limit_max):
@@ -107,17 +108,20 @@ class LEM:
         self.p1xyz = np.repeat(self.p1xyz, self.n_f, axis=1)
         self.p2xyz = np.expand_dims(p2xyz, axis=1)
         self.p2xyz = np.repeat(self.p2xyz, self.n_f, axis=1)
+        bar = IncrementalBar('Iterating', max=times)
         for i in range(times):
             dis = self.l2p_distance()
             response = self.expect(dis)
             if(self.maximum(response,dis)<0.000001):
                 break
+            bar.next()
             '''print('=============================iteration %d============================='%(i+1))
             print('sigma - the standard deviation:')
             print(self.sigma)
             print('p_f - probability distribution of the faces:')
             print(self.p_f)'''
         end = time.clock()
+        bar.finish()
         print('iteration used time: '+str(end - start)+'s')
         dis = self.l2p_distance()
         response = self.expect(dis)

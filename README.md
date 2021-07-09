@@ -1,11 +1,16 @@
 # Plane reconstruction from 3D lines
 
-Input: 3D lines set
+#### Input
+3D lines set, obj file.
 
-Output: Planes fitting lines
+#### Output
+Planes fitting lines, vg file.
 
-It can be resolved as a clustering problem
-
-Algorithm Detail: like GMM(Gaussian Mixture Model), using Bayes theorem, assume
+#### Algorithm Detail
+It can be resolved as a clustering problem like GMM(Gaussian Mixture Model), using Bayes theorem, assume
 the probablity of lines is decided by probability of planes and conditional 
-probability of lines giving plane
+probability of lines giving plane.
+
+#### Test Cases
+- DJI_cut.obj; fa2e5729 chaos <liuyanchao99@gmail.com> on 2019/9/19; Volume(61); Fitting(0.179), Coverage(0.14), Complexity(0.681); Fitting(0.288), Coverage(0.124), Complexity(0.588);
+- line_segments_3d_clustered_allpics_11_5_18.obj; 33b375de yanchao <liuyanchao99@gmail.com> on 2021/7/6; Volume(19); Fitting(0.276), Coverage(0.36), Complexity(0.364); 
