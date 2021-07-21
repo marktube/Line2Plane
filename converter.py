@@ -34,4 +34,9 @@ def line2wire(fpath):
             fw.write('f %d %d %d\n'%(lidx[i][0],lidx[i][1],lidx[i][1]))
 
 if __name__ == '__main__':
-    line2wire('/home/hiko/Downloads/L3DData/office.obj')
+    line2wire('/home/hiko/Downloads/LineData/Line3D++__largeCity.obj')
+    line2wire('/home/hiko/Downloads/LineData/Line3D++__office.obj')
+    line2wire('/home/hiko/Downloads/LineData/Line3D++__restaurant.obj')
+    line2wire('/home/hiko/Downloads/LineData/Line3D++_sixuegongyu.obj')
+    line2wire('/home/hiko/Downloads/LineData/Line3D++__thu_ocean.obj')
+

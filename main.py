@@ -8,8 +8,8 @@ sys.path.append(os.path.join(BASE_DIR, 'models'))
 from models.LScene import LScene
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--volume', type=int, default=19, help='Volumes to use [default: volume 2]')
-parser.add_argument('--line_data', default='data/line_segments_3d_clustered_allpics_11_5_18.obj', help='Line data input filepath [default: ]')
+parser.add_argument('--volume', type=int, default=20, help='Volumes to use [default: volume 2]')
+parser.add_argument('--line_data', default='/home/hiko/Downloads/LineData/LSD_sixuegongyu_cut.obj', help='Line data input filepath [default: ]')
 parser.add_argument('--out', default='', help='Line data output filepath [default: {input filepath_[volume]}.vg]')
 parser.add_argument('--gui', default='true', help='true or false [default: false]')
 FLAGS = parser.parse_args()
