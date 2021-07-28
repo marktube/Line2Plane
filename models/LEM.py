@@ -20,7 +20,7 @@ class LEM:
         '''
         self.n_f = volume * 3
         self.p_f = np.ones(self.n_f)/self.n_f
-        self.sigma = np.ones(self.n_f)*np.min(limit_max-limit_min)/volume
+        self.sigma = np.ones(self.n_f)*math.sqrt(np.sum((limit_max-limit_min)**2))/(volume*math.sqrt(3))#np.ones(self.n_f)*np.min(limit_max-limit_min)/volume
         self.f_v = np.empty([3,volume])
         tmp = np.zeros([3, self.n_f])
         for j in range(3):
@@ -67,7 +67,8 @@ class LEM:
         s_l = np.sum(response, axis=1)
         response = (response.T / s_l).T
         if np.isnan(response).sum()+np.isinf(response).sum()>0:
-            print('error')
+            print('error underflow occured')
+            response = np.nan_to_num(response, nan=1 / self.n_f)
         return response
 
     def maximum(self,response,dis):
@@ -78,6 +79,18 @@ class LEM:
         :return: residual
         '''
         s_r = np.sum(response,axis=0)
+        excp = np.squeeze(np.argwhere(s_r == 0))
+        if excp.size > 0:
+            s_r = np.delete(s_r,excp)
+            response = np.delete(response,excp,axis=1)
+            dis = np.delete(dis,excp,axis=1)
+            self.n_f = self.n_f - excp.size
+            self.p_f = np.delete(self.p_f, excp)
+            self.sigma = np.delete(self.sigma, excp)
+            self.f_v = np.delete(self.f_v, excp, axis=0)
+            self.f_n = np.delete(self.f_n, excp, axis=0)
+            self.p1xyz = np.delete(self.p1xyz, excp, axis=1)
+            self.p2xyz = np.delete(self.p2xyz, excp, axis=1)
         cov = np.sum(response * dis, axis=0) / s_r
         self.sigma = np.sqrt(cov)
         m_n = self.v2m(self.p1xyz - self.f_v) + self.v2m(self.p2xyz - self.f_v)
