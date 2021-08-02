@@ -97,7 +97,7 @@ class LEM:
         m_n = m_n.transpose((2,3,0,1)) * response
         m_n = np.sum(m_n.transpose((2,3,0,1)), axis=0)
         w,v = np.linalg.eig(m_n)
-        self.f_n = v[np.arange(v.shape[0]), :, np.argmin(w,axis=-1)]
+        self.f_n = np.real(v[np.arange(v.shape[0]), :, np.argmin(w,axis=-1)])
         pxyz = self.p1xyz + self.p2xyz
         pxyz = pxyz.transpose((2,0,1)) * response
         pxyz = np.sum(pxyz, axis=1) / (2 * s_r)
