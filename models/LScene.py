@@ -88,7 +88,7 @@ class LScene:
         with open(filePath, "w") as fo:
             fo.write("num_points: %d\n"%len(self.vertices))
             for i in range(self.vertices.shape[0]):
-                fo.write("%f %f %f "%(self.vertices[i][0], self.vertices[i][1], self.vertices[i][2]))
+                fo.write("%f %f %f\n"%(self.vertices[i][0], self.vertices[i][1], self.vertices[i][2]))
             fo.write("\n")
 
             candicate_colors = get_colors(np.max(self.cluster_id)+1)
@@ -98,13 +98,13 @@ class LScene:
 
             fo.write("num_colors: %d\n" % len(self.vertices))
             for i in range(len(self.vertices)):
-                fo.write("%f %f %f "%(candicate_colors[cluster[i]][0],candicate_colors[cluster[i]][1],
+                fo.write("%f %f %f\n"%(candicate_colors[cluster[i]][0],candicate_colors[cluster[i]][1],
                                       candicate_colors[cluster[i]][2]))
             fo.write("\n")
 
             fo.write("num_normals: %d\n" % len(self.vertices))
             for i in range(len(self.vertices)):
-                fo.write("%f %f %f " % (self.planes[cluster[i]][0], self.planes[cluster[i]][1], self.planes[cluster[i]][2]))
+                fo.write("%f %f %f\n" % (self.planes[cluster[i]][0], self.planes[cluster[i]][1], self.planes[cluster[i]][2]))
             fo.write("\n")
 
             fo.write("num_groups: %d\n" % len(self.planes))
