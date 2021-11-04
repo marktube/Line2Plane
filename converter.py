@@ -1,7 +1,7 @@
 from PIL import Image
 import os
 
-def gif2jpg(path_prefix):
+def format2jpg(path_prefix):
     filenames = os.listdir(path_prefix)
     print(len(filenames))
     for tgai in filenames:
@@ -54,10 +54,11 @@ def line2wire(fpath):
 
 if __name__ == '__main__':
     #line2wire('/home/hiko/Downloads/LineData/Line3D++__largeCity.obj')
-    line2wire('/home/hiko/Downloads/LineData/Line3D++__office_c.obj')
+    #line2wire('/home/hiko/Downloads/LineData/Line3D++__office_c.obj')
     #line2wire('/home/hiko/Downloads/LineData/Line3D++__restaurant.obj')
     #line2wire('/home/hiko/Downloads/LineData/Line3D++_sixuegongyu.obj')
     #line2wire('/home/hiko/Downloads/LineData/Line3D++__thu_ocean.obj')
     #wire2line('/home/hiko/Downloads/LineData/LSD_office.obj')
     #wire2line('/home/hiko/Downloads/LineData/LSD_thu_ocean.obj')
     #wire2line('/home/hiko/Downloads/LineData/LSD_sixuegongyu.obj')
+    format2jpg('/home/hiko/Workspace/11_1lines/Andalusian/images')
