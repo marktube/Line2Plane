@@ -1,5 +1,5 @@
-for i in {14..32}
+for i in {3..40}
 do
 #  echo $i
-    python main.py --volume $i --line_data /home/hiko/Workspace/Line2Plane/data/3dstl/pyramid_box_lid_line.obj --gui false
+    python main.py --volume $i --line_data /home/hiko/Workspace/11_1lines/2019-5-13-kejilou/cmvs/kejilou_cut.obj --gui false
 done

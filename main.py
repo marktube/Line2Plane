@@ -8,8 +8,8 @@ sys.path.append(os.path.join(BASE_DIR, 'models'))
 from models.LScene import LScene
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--volume', type=int, default=30, help='Volumes to use [default: volume 2]')
-parser.add_argument('--line_data', default='/home/hiko/Workspace/Line2Plane/data/3dstl/pyramid_box_lid_line.obj', help='Line data input filepath [default: ]')
+parser.add_argument('--volume', type=int, default=19, help='Volumes to use [default: volume 2]')
+parser.add_argument('--line_data', default='/home/hiko/Workspace/Line2Plane/data/20_sub_crop.obj', help='Line data input filepath [default: ]')
 parser.add_argument('--out', default='', help='Line data output filepath [default: {input filepath_[volume]}.vg]')
 parser.add_argument('--gui', default='true', help='true or false [default: false]')
 FLAGS = parser.parse_args()

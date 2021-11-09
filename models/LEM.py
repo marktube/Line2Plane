@@ -20,7 +20,7 @@ class LEM:
         '''
         self.n_f = volume * 3
         self.p_f = np.ones(self.n_f)/self.n_f
-        self.sigma = np.ones(self.n_f)*np.min(limit_max-limit_min)/(volume*2)#np.ones(self.n_f)*math.sqrt(np.sum((limit_max-limit_min)**2))/(volume*math.sqrt(3))#
+        self.sigma = np.ones(self.n_f)*np.min(limit_max-limit_min)/volume#np.ones(self.n_f)*math.sqrt(np.sum((limit_max-limit_min)**2))/(volume*math.sqrt(3))
         self.f_v = np.empty([3,volume])
         tmp = np.zeros([3, self.n_f])
         for j in range(3):
@@ -91,8 +91,8 @@ class LEM:
             self.f_n = np.delete(self.f_n, excp, axis=0)
             self.p1xyz = np.delete(self.p1xyz, excp, axis=1)
             self.p2xyz = np.delete(self.p2xyz, excp, axis=1)
-        #cov = np.sum(response * dis, axis=0) / s_r
-        #self.sigma = np.sqrt(cov)
+        cov = np.sum(response * dis, axis=0) / s_r
+        self.sigma = np.sqrt(cov)
         m_n = self.v2m(self.p1xyz - self.f_v) + self.v2m(self.p2xyz - self.f_v)
         m_n = m_n.transpose((2,3,0,1)) * response
         m_n = np.sum(m_n.transpose((2,3,0,1)), axis=0)
