@@ -81,7 +81,7 @@ class LScene:
         model = LEM.LEM(volume, self.min_coord, self.max_coord)
         p1xyz = self.vertices[self.lines[:, 0]]
         p2xyz = self.vertices[self.lines[:, 1]]
-        self.planes, self.cluster_id = model.iter(180, p1xyz, p2xyz)
+        self.planes, self.cluster_id = model.iter(100, p1xyz, p2xyz)
         print('Filter done')
 
     def saveSceneAsVG(self, filePath):

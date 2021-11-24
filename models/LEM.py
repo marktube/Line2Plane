@@ -20,7 +20,7 @@ class LEM:
         '''
         self.n_f = volume * 3
         self.p_f = np.ones(self.n_f)/self.n_f
-        self.sigma = np.ones(self.n_f)*np.min(limit_max-limit_min)/volume#np.ones(self.n_f)*math.sqrt(np.sum((limit_max-limit_min)**2))/(volume*math.sqrt(3))
+        self.sigma = np.ones(self.n_f)*np.min(limit_max-limit_min)/(3*volume)#np.ones(self.n_f)*math.sqrt(np.sum((limit_max-limit_min)**2))/(volume*math.sqrt(3))
         self.f_v = np.empty([3,volume])
         tmp = np.zeros([3, self.n_f])
         for j in range(3):
