@@ -58,7 +58,7 @@ def line2wire(fpath):
             fw.write('f %d %d %d\n'%(lidx[i][0],lidx[i][1],lidx[i][1]))
 
 if __name__ == '__main__':
-    line2wire('/home/hiko/Workspace/11_1lines/window/cmvs/Line3D++__W_FULL__N_10__sigmaP_2.5__sigmaA_10__epiOverlap_0.25__kNN_10__OPTIMIZED__vis_3.obj')
+    line2wire('/home/hiko/Workspace/11_1lines/20_sub/cmvs/Line3D++__W_FULL__N_10__sigmaP_2.5__sigmaA_10__epiOverlap_0.25__kNN_10__OPTIMIZED__vis_3.obj')
     #line2wire('/home/hiko/Downloads/LineData/Line3D++__office_c.obj')
     #line2wire('/home/hiko/Downloads/LineData/Line3D++__restaurant.obj')
     #line2wire('/home/hiko/Downloads/LineData/Line3D++_sixuegongyu.obj')

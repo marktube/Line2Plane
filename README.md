@@ -26,6 +26,10 @@ probability of lines giving plane.
   - Volume(19);
   - Fitting(0.308), Coverage(0.331), Complexity(0.361);
 - kejilou_crop.obj;
-  - ?
+  - 784c15e9 yanchao <liuyanchao99@gmail.com> on 2021/11/24
   - Volume(11);
   - Fitting(0.205), Coverage(0.338), Complexity(0.456);
+- Line3D++_kejilou_cut2.obj;
+  - current
+  - Volume(11);
+  - Fitting(0.212), Coverage(0.312), Complexity(0.477);

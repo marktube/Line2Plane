@@ -9,7 +9,7 @@ from models.LScene import LScene
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--volume', type=int, default=11, help='Volumes to use [default: volume 2]')
-parser.add_argument('--line_data', default='/home/hiko/Workspace/11_1lines/kejilou_crop.obj', help='Line data input filepath [default: ]')
+parser.add_argument('--line_data', default='/home/hiko/Workspace/11_1lines/2019-5-13-kejilou/cmvs/Line3D++_kejilou_cut2.obj', help='Line data input filepath [default: ]')
 parser.add_argument('--out', default='', help='Line data output filepath [default: {input filepath_[volume]}.vg]')
 parser.add_argument('--gui', default='true', help='true or false [default: false]')
 FLAGS = parser.parse_args()
