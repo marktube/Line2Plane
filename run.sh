@@ -1,5 +1,5 @@
-for i in {3..11}
+for i in {23..61}
 do
 #  echo $i
-    python main.py --volume $i --line_data /home/hiko/Workspace/11_1lines/kejilou_crop.obj --gui false
+    python main.py --volume $i --line_data /home/hiko/Workspace/Line2Plane/data/Barn+haoyu_cut.obj --gui false
 done

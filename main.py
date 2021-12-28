@@ -9,7 +9,7 @@ from models.LScene import LScene
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--volume', type=int, default=11, help='Volumes to use [default: volume 2]')
-parser.add_argument('--line_data', default='/home/hiko/Workspace/11_1lines/2019-5-13-kejilou/cmvs/Line3D++_kejilou_cut2.obj', help='Line data input filepath [default: ]')
+parser.add_argument('--line_data', default='/home/hiko/Workspace/Line2Plane/data/Barn+haoyu_cut.obj', help='Line data input filepath [default: ]')
 parser.add_argument('--out', default='', help='Line data output filepath [default: {input filepath_[volume]}.vg]')
 parser.add_argument('--gui', default='true', help='true or false [default: false]')
 FLAGS = parser.parse_args()
@@ -26,6 +26,7 @@ if NUM_VOLUMES<2:
     exit(0)
 if not OUTPUT:
     OUTPUT=LINE_DATA[:-4]+"_"+str(NUM_VOLUMES)+".vg"
+    OUTPUT_ply=LINE_DATA[:-4]+"_"+str(NUM_VOLUMES)+".ply"
 if IS_GUI=='true':
     IS_GUI=True
 else:
@@ -40,4 +41,5 @@ if IS_GUI:
 
 print("writing output file")
 test.saveSceneAsVG(OUTPUT)
+#test.saveClusterAsPly(OUTPUT_ply)
 print("done")
