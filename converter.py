@@ -59,6 +59,9 @@ def line2wire(fpath):
         for i in range(len(lidx)):
             fw.write('f %d %d %d\n'%(lidx[i][0],lidx[i][1],lidx[i][1]))
 
+def vg2ply(fn):
+    pass
+
 def readVg(fn):
     pxyz = []
     gpara = []

@@ -30,6 +30,10 @@ probability of lines giving plane.
   - Volume(11);
   - Fitting(0.205), Coverage(0.338), Complexity(0.456);
 - Line3D++_kejilou_cut2.obj;
-  - current
+  - 5d3325c7 yanchao <liuyanchao99@gmail.com> on 2021/11/29
   - Volume(11);
   - Fitting(0.212), Coverage(0.312), Complexity(0.477);
+- Barn+haoyu_cut[6,7,8].obj;
+  - 75fe17c3 yanchao <liuyanchao99@gmail.com> on 2021/12/31
+  - Volume([7,9,2]);
+  - Fitting(0.205), Coverage(0.338), Complexity(0.456);
