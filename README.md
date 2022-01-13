@@ -21,6 +21,10 @@ probability of lines giving plane.
   - 33b375de yanchao <liuyanchao99@gmail.com> on 2021/7/6;
   - Volume(19); 
   - Fitting(0.276), Coverage(0.36), Complexity(0.364);
+- timber_house_cut.obj;
+  - 86c47bfc 刘彦超 <liuyanchao99@gmail.com> on 2020/10/27;
+  - Volume(19);
+  - Fitting(), Coverage(), Complexity();
 - 20_sub_crop.obj;
   - 43397e68 yanchao <liuyanchao99@gmail.com> on 2021/11/9;
   - Volume(19);
