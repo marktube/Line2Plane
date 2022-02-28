@@ -2,6 +2,18 @@ import bpy
 import os
 import sys
 import numpy as np
+import colorsys
+
+
+def get_colors(num_colors):
+    colors = []
+    for i in np.arange(0., 360., 360. / num_colors):
+        hue = i / 360.
+        lightness = (50 + np.random.rand() * 10) / 100.
+        saturation = (90 + np.random.rand() * 10) / 100.
+        colors.append(colorsys.hls_to_rgb(hue, lightness, saturation))
+    return np.array(colors)
+
 
 def loadClusterPly(fn):
     pointset = []
@@ -54,49 +66,78 @@ def loadClusterPly(fn):
             lidx.append(lid)
             cidx.append(int(numbers[2]))
 
-    return np.array(pointset),np.array(colors),np.array(lidx),np.array(cidx)
+    return np.array(pointset), np.array(colors, dtype='float') / 255, np.array(lidx), np.array(cidx)
 
 
 def createLS(pointset, colors, lidx, cidx):
     mats = []
-    #print(colors)
+    # print(colors)
     for i in range(len(colors)):
         mat = bpy.data.materials.new(name='Material for cluster ({0:0>2d})'.format(i))
-        mat.diffuse_color = (float(colors[i][0])/255, float(colors[i][1])/255, float(colors[i][2])/255, 1.0)
+        # mat.diffuse_color = (float(colors[i][0])/255, float(colors[i][1])/255, float(colors[i][2])/255, 1.0)
+        # get the nodes
+        mat.use_nodes = True
+        nodes = mat.node_tree.nodes
+        # clear all nodes to start clean
+        nodes.clear()
+        # create emission node
+        node_emission = nodes.new(type='ShaderNodeEmission')
+        node_emission.inputs[0].default_value = (*colors[i], 1)  # RGBA
+        # node_emission.inputs[1].default_value = 1.0 # strength
+        # create output node
+        node_output = nodes.new(type='ShaderNodeOutputMaterial')
+        # link nodes
+        links = mat.node_tree.links
+        link = links.new(node_emission.outputs[0], node_output.inputs[0])
         mats.append(mat)
 
+    bpy.ops.curve.primitive_bezier_curve_add()
+    bcobj = bpy.context.object
     for i in range(len(lidx)):
+        print(i)
         # add a curve to link them together
-        bpy.ops.curve.primitive_bezier_curve_add()
-        obj = bpy.context.object
-        obj.data.dimensions = '3D'
-        obj.data.fill_mode = 'FULL'
-        obj.data.bevel_depth = 0.005
-        obj.data.bevel_resolution = 4
-        obj.data.resolution_u = 1
-        # set first point to centre of sphere1
-        obj.data.splines[0].bezier_points[0].co = (
-        pointset[lidx[i][0]][0], pointset[lidx[i][0]][1], pointset[lidx[i][0]][2])  # (-1,-1,0)
-        obj.data.splines[0].bezier_points[0].handle_left_type = 'VECTOR'
-        # set second point to centre of sphere2
-        obj.data.splines[0].bezier_points[1].co = (
-        pointset[lidx[i][1]][0], pointset[lidx[i][1]][1], pointset[lidx[i][1]][2])  # (1,1,0)
-        obj.data.splines[0].bezier_points[1].handle_left_type = 'VECTOR'
-        obj.data.materials.append(mats[cidx[i]])
-        bpy.ops.object.convert(target='MESH')
-        
-    bpy.ops.object.select_all(action='DESELECT')
-    bpy.ops.object.select_by_type(type='MESH')
-    bpy.ops.object.join()
+        bcurve = bcobj.copy()
+        bcurve.data = bcobj.data.copy()
 
+        bcurve.data.dimensions = '3D'
+        bcurve.data.fill_mode = 'FULL'
+        bcurve.data.bevel_depth = 0.005
+        bcurve.data.bevel_resolution = 4
+        bcurve.data.resolution_u = 1
+        # set first point to centre of sphere1
+        bcurve.data.splines[0].bezier_points[0].co = (
+            pointset[lidx[i][0]][0], pointset[lidx[i][0]][1], pointset[lidx[i][0]][2])  # (-1,-1,0)
+        bcurve.data.splines[0].bezier_points[0].handle_left_type = 'VECTOR'
+        # set second point to centre of sphere2
+        bcurve.data.splines[0].bezier_points[1].co = (
+            pointset[lidx[i][1]][0], pointset[lidx[i][1]][1], pointset[lidx[i][1]][2])  # (1,1,0)
+        bcurve.data.splines[0].bezier_points[1].handle_left_type = 'VECTOR'
+        bcurve.data.materials.append(mats[cidx[i]])
+        # bpy.ops.object.convert(target='MESH')
+
+        bpy.context.collection.objects.link(bcurve)
+
+    # bpy.context.scene.update() error in 2.9?
+    bpy.context.view_layer.update()  # only once
+
+    # remove initial
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.data.objects['BezierCurve'].select_set(True)
+    bpy.ops.object.delete()
+
+    # convert to mesh and combine
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.ops.object.select_by_type(type='CURVE')
+    bpy.ops.object.convert(target='MESH')
+    bpy.ops.object.join()
 
 
 if __name__ == '__main__':
     # Set render engine
-    bpy.context.scene.render.engine = 'CYCLES'
+    '''bpy.context.scene.render.engine = 'CYCLES'
     bpy.context.scene.cycles.device = 'GPU'
     bpy.context.scene.render.film_transparent = True
-    bpy.context.scene.view_settings.view_transform = 'Standard'
-    pointset,colors,lidx,cidx=loadClusterPly('/home/hiko/Workspace/Line2Plane/data/DJI_test_res.ply')
-    createLS(pointset,colors,lidx,cidx)
-
+    bpy.context.scene.view_settings.view_transform = 'Standard' '''
+    pointset, colors, lidx, cidx = loadClusterPly(
+        r'D:\Cha0s\Workspace\Blender_rendering\Line2Plane\data\DJI_cluster.ply')
+    createLS(pointset, colors, lidx, cidx)
