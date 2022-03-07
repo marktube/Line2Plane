@@ -207,13 +207,13 @@ if __name__ == '__main__':
     '''combineVg('/home/hiko/Workspace/Line2Plane/data/Barn+haoyu_cut6_7.vg',
               '/home/hiko/Workspace/Line2Plane/data/Barn+haoyu_res.vg',
               '/home/hiko/Workspace/Line2Plane/data/Barn+haoyu_res.vg')'''
-    vg2ply('/home/hiko/Workspace/Line2Plane/data/Barn+haoyu_res.vg','/home/hiko/Workspace/Line2Plane/data/Barn+haoyu_res.ply')
+    #vg2ply('/home/hiko/Workspace/Line2Plane/data/Barn+haoyu_res.vg','/home/hiko/Workspace/Line2Plane/data/Barn+haoyu_res.ply')
     #line2wire('/home/hiko/Workspace/11_1lines/20_sub/cmvs/Line3D++__W_FULL__N_10__sigmaP_2.5__sigmaA_10__epiOverlap_0.25__kNN_10__OPTIMIZED__vis_3.obj')
     #line2wire('/home/hiko/Downloads/LineData/Line3D++__office_c.obj')
     #line2wire('/home/hiko/Downloads/LineData/Line3D++__restaurant.obj')
     #line2wire('/home/hiko/Downloads/LineData/Line3D++_sixuegongyu.obj')
     #line2wire('/home/hiko/Downloads/LineData/Line3D++__thu_ocean.obj')
     #wire2line('/home/hiko/Downloads/LineData/LSD_office.obj')
-    #wire2line('/home/hiko/Downloads/LineData/LSD_thu_ocean.obj')
+    wire2line('/home/hiko/Workspace/line3dpp-vsfm-gta5-16-face-inf-var.obj')
     #wire2line('/home/hiko/Downloads/compare/DJI_modified_line.obj')
     #format2jpg('/home/hiko/Workspace/11_1lines/Andalusian/images')

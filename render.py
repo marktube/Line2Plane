@@ -23,31 +23,31 @@ def loadClusterVg(fn):
     with open(fn, "r") as fr:
         num_str = fr.readline().strip()
         pcount = int(num_str.split(':')[1])
-        # line=fr.readline().strip()
-        # line=line.split(' ')
+        line = fr.readline().strip()
+        line = line.split(' ')
         for i in range(pcount):
-            # pxyz.append([float(line[3*i]),-float(line[3*i+2]),float(line[3*i+1])])
-            line = fr.readline().strip()
+            pxyz.append([float(line[3 * i]), -float(line[3 * i + 2]), float(line[3 * i + 1])])
+            '''line=fr.readline().strip()
             values = line.split()
-            pxyz.append([float(values[0]), -float(values[2]), float(values[1])])
+            pxyz.append([float(values[0]),-float(values[2]),float(values[1])])'''
 
         num_str = fr.readline().strip()
         ccount = int(num_str.split(':')[1])
-        # line=fr.readline()
-        for i in range(ccount):
-            line = fr.readline().strip()
-            # color info is not needed
+        line = fr.readline()
+        # for i in range(ccount):
+        #    line=fr.readline().strip()
+        # color info is not needed
 
         num_str = fr.readline().strip()
         ncount = int(num_str.split(':')[1])
-        # line=fr.readline()
-        for i in range(ncount):
-            line = fr.readline().strip()
-            # normal info is not needed
+        line = fr.readline()
+        # for i in range(ncount):
+        #    line=fr.readline().strip()
+        # normal info is not needed
 
         num_str = fr.readline().strip()
         gcount = int(num_str.split(':')[1])
-        colors = get_colors(gcount)
+        # colors = get_colors(gcount)
 
         for i in range(gcount):
             fr.readline()  # group_type: 0
@@ -57,8 +57,8 @@ def loadClusterVg(fn):
 
             fr.readline()  # group_label: unknown
             line = fr.readline().strip()  # group_color
-            # c_str = line.split(' ')
-            # colors.append([float(c_str[1]),float(c_str[2]),float(c_str[3])])
+            c_str = line.split(' ')
+            colors.append([float(c_str[1]), float(c_str[2]), float(c_str[3])])
 
             line = fr.readline().strip()
             gpcount = int(line.split(':')[1])
@@ -160,7 +160,7 @@ def createLS(pointset, colors, lidx, cidx):
 
         bcurve.data.dimensions = '3D'
         bcurve.data.fill_mode = 'FULL'
-        bcurve.data.bevel_depth = 0.005
+        bcurve.data.bevel_depth = 0.001
         bcurve.data.bevel_resolution = 4
         bcurve.data.resolution_u = 1
         # set first point to centre of sphere1
@@ -171,7 +171,7 @@ def createLS(pointset, colors, lidx, cidx):
         bcurve.data.splines[0].bezier_points[1].co = (
             pointset[lidx[i][1]][0], pointset[lidx[i][1]][1], pointset[lidx[i][1]][2])  # (1,1,0)
         bcurve.data.splines[0].bezier_points[1].handle_left_type = 'VECTOR'
-        bcurve.data.materials.append(mats[(cidx[i] + 6) % len(colors)])
+        bcurve.data.materials.append(mats[(cidx[i] + 1) % len(colors)])
         # bpy.ops.object.convert(target='MESH')
 
         bpy.context.collection.objects.link(bcurve)
@@ -199,6 +199,5 @@ if __name__ == '__main__':
     bpy.context.scene.view_settings.view_transform = 'Standard' '''
     # pointset,colors,lidx,cidx=loadClusterPly(r'D:\Cha0s\Workspace\Blender_rendering\Line2Plane\data\DJI_cluster.ply')
     pointset, colors, lidx, cidx = loadClusterVg(
-        r'D:\Cha0s\Workspace\Blender_rendering\Line2Plane\data\vg\Line3D++_kejilou_cut2_11.vg')
+        r'D:\Cha0s\Workspace\Blender_rendering\Line2Plane\data\gta5-16\L2P-line3dpp-vsfm-gta5-16-face-inf-var_10_inf.vg')
     createLS(pointset, colors, lidx, cidx)
-
