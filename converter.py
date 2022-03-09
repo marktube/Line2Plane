@@ -214,6 +214,6 @@ if __name__ == '__main__':
     #line2wire('/home/hiko/Downloads/LineData/Line3D++_sixuegongyu.obj')
     #line2wire('/home/hiko/Downloads/LineData/Line3D++__thu_ocean.obj')
     #wire2line('/home/hiko/Downloads/LineData/LSD_office.obj')
-    wire2line('/home/hiko/Workspace/line3dpp-vsfm-gta5-16-face-inf-var.obj')
+    #wire2line('/home/hiko/Workspace/line3dpp-vsfm-gta5-16-face-inf-var.obj')
     #wire2line('/home/hiko/Downloads/compare/DJI_modified_line.obj')
     #format2jpg('/home/hiko/Workspace/11_1lines/Andalusian/images')
