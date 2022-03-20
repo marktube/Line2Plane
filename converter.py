@@ -313,5 +313,5 @@ if __name__ == '__main__':
     genLines(1, prefix1)
     genLines(1, prefix2)
     genLines(1, prefix3)'''
-    computeClusterIndex('/home/hiko/Downloads/data/dispatch/other_ball1_gt.txt')
+    computeClusterIndex('/home/hiko/Downloads/data/dispatch/Fig101_gt.txt')
 
