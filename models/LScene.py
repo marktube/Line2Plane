@@ -114,6 +114,7 @@ class LScene:
 
 
     def saveSceneAsVG(self, filePath):
+        np.savetxt(filePath[:-5] + 'ours.txt', self.cluster_id, fmt="%d")
         with open(filePath, "w") as fo:
             fo.write("num_points: %d\n"%len(self.vertices))
             for i in range(self.vertices.shape[0]):

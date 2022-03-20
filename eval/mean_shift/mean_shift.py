@@ -113,6 +113,7 @@ def run_test(filepath):
     vertices, lidx = readObj(filepath)
     pred_labels, pred_num = show_mean_shift_cluster(vertices, lidx)
     save_cluster_vg(filepath[:-4] + '_ms.vg', vertices, lidx, pred_labels, pred_num)
+    np.savetxt(filepath[:-4] + '_ms.txt', pred_labels, fmt="%d")
     '''
             primitive = f['primitive_id'][i]
             codebook = f['codebook'][i]

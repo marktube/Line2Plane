@@ -42,8 +42,6 @@ def save_cluster_vg(fn, xyz, lidx, labels, max_label):
             fo.write("\n")
             fo.write("num_children: 0\n")
 
-
-
 def save_cluster_index(gt_num, pred_num, ri, nmi, i):
     fn = 'Tree' + str(i) + '_cluster_index.txt'
     with open(fn, 'w') as f:
@@ -119,7 +117,7 @@ def run_test(filepath):
     vertices, lidx = readObj(filepath)
     pred_labels, pred_num = show_dbscan_cluster(vertices, lidx)
     save_cluster_vg(filepath[:-4]+'_db.vg', vertices, lidx, pred_labels, pred_num)
-
+    np.savetxt(filepath[:-4] + '_db.txt', pred_labels, fmt="%d")
     '''pred_labels, pred_num = show_dbscan_cluster(xyz, i)
             primitive = f['primitive_id'][i]
             codebook = f['codebook'][i]

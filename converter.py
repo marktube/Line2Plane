@@ -2,6 +2,7 @@ from PIL import Image
 import os
 import colorsys
 import numpy as np
+from sklearn import metrics
 
 def get_colors(num_colors):
     colors=[]
@@ -153,6 +154,7 @@ def genLines(mode,fpath):
         clusters.append(planes)
     # generate lines
     vertices = []
+    gt_label = []
     lineCountPerFace = 90
     if mode:
         # random generate
@@ -170,6 +172,7 @@ def genLines(mode,fpath):
                     weight2 = weight2 / np.sum(weight2)
                     vertices.append(weight1.dot(vt))
                     vertices.append(weight2.dot(vt))
+                    gt_label.append(i)
     else:
         pass
     # save lines obj
@@ -180,6 +183,9 @@ def genLines(mode,fpath):
         count = int(count / 2)
         for i in range(count):
             fw.write('l %d %d\n'%(i*2+1,i*2+2))
+    # save gt labels
+    gt_label = np.array(gt_label)
+    np.savetxt(fpath + str(mode) + '_gt.txt', gt_label, fmt="%d")
 
 
 def vg2ply(fn, outfn):
@@ -260,6 +266,31 @@ def combineVg(fn1,fn2,outfn):
             fo.write("\n")
             fo.write("num_children: 0\n")
 
+def computeClusterIndex(fpath):
+    gt_label = np.loadtxt(fpath, dtype=int)
+    db_label = np.loadtxt(fpath[:-6]+'line_db.txt', dtype=int)
+    ms_label = np.loadtxt(fpath[:-6]+'line_ms.txt', dtype=int)
+    ours_label = np.loadtxt(fpath[:-6] + 'line_ours.txt', dtype=int)
+    print(type(ms_label[0]))
+    db_ri = metrics.rand_score(gt_label, db_label)
+    db_nmi = metrics.normalized_mutual_info_score(gt_label, db_label)
+    ms_ri = metrics.rand_score(gt_label, ms_label)
+    ms_nmi = metrics.normalized_mutual_info_score(gt_label, ms_label)
+
+    ours_ri = metrics.rand_score(gt_label, ours_label)
+    ours_nmi = metrics.normalized_mutual_info_score(gt_label, ours_label)
+
+    with open(fpath[:-6]+'cluster_index.txt', 'w') as f:
+        f.write('Ground Truth Number: %d\n' % (np.max(gt_label)+1))
+        f.write('DBSCAN Prediction Number: %d\n' % (np.max(db_label)+2))
+        f.write('DBSCAN Rand Index: %f\n' % db_ri)
+        f.write('DBSCAN Normalized Mutual Index: %f\n' % db_nmi)
+        f.write('Mean shift Prediction Number: %d\n' % (np.max(ms_label) + 2))
+        f.write('Mean shift Rand Index: %f\n' % ms_ri)
+        f.write('Mean shift Normalized Mutual Index: %f\n' % ms_nmi)
+        f.write('Ours Prediction Number: %d\n' % (np.max(ours_label) + 1))
+        f.write('Ours Rand Index: %f\n' % ours_ri)
+        f.write('Ours Normalized Mutual Index: %f\n' % ours_nmi)
 
 if __name__ == '__main__':
     '''combineVg('/home/hiko/Workspace/Line2Plane/data/Barn+haoyu_cut6_7.vg',
@@ -276,6 +307,11 @@ if __name__ == '__main__':
     #wire2line('/home/hiko/Downloads/compare/DJI_modified_line.obj')
     #format2jpg('/home/hiko/Workspace/11_1lines/Andalusian/images')
 
-    prefix = '/home/hiko/Downloads/data/dispatch/Fig10'
-    genLines(1, prefix)
+    '''prefix1 = '/home/hiko/Downloads/data/dispatch/Fig10'
+    prefix2 = '/home/hiko/Downloads/data/dispatch/toy_data'
+    prefix3 = '/home/hiko/Downloads/data/dispatch/other_ball'
+    genLines(1, prefix1)
+    genLines(1, prefix2)
+    genLines(1, prefix3)'''
+    computeClusterIndex('/home/hiko/Downloads/data/dispatch/other_ball1_gt.txt')
 
