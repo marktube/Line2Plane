@@ -187,7 +187,6 @@ def genLines(mode,fpath):
     gt_label = np.array(gt_label)
     np.savetxt(fpath + str(mode) + '_gt.txt', gt_label, fmt="%d")
 
-
 def vg2ply(fn, outfn):
     pxyz, gpara, gmemid = readVg(fn)
     num_l = 0
@@ -313,5 +312,5 @@ if __name__ == '__main__':
     genLines(1, prefix1)
     genLines(1, prefix2)
     genLines(1, prefix3)'''
-    computeClusterIndex('/home/hiko/Downloads/data/dispatch/Fig101_gt.txt')
+    computeClusterIndex('/home/hiko/Downloads/data/dispatch/toy_data1_gt.txt')
 

@@ -3,7 +3,15 @@ import open3d as o3d
 from sklearn.cluster import MeanShift, estimate_bandwidth
 import colorsys
 import matplotlib.pyplot as plt
-from sklearn import metrics
+
+def get_colors(num_colors):
+    colors=[]
+    for i in np.arange(0., 360., 360. / num_colors):
+        hue = i/360.
+        lightness = (50 + np.random.rand() * 10)/100.
+        saturation = (90 + np.random.rand() * 10)/100.
+        colors.append(colorsys.hls_to_rgb(hue, lightness, saturation))
+    return colors
 
 def save_cluster_vg(fn, xyz, lidx, labels, max_label):
     colors = plt.get_cmap("tab20")(labels / (max_label if max_label > 0 else 1))
@@ -31,23 +39,6 @@ def save_cluster_vg(fn, xyz, lidx, labels, max_label):
                 fo.write("%d %d " % (lidx[j][0], lidx[j][1]))
             fo.write("\n")
             fo.write("num_children: 0\n")
-
-def save_cluster_index(gt_num, pred_num, ri, nmi, i):
-    fn = 'Tree' + str(i) + '_cluster_index.txt'
-    with open(fn, 'w') as f:
-        f.write('Ground Truth Number: %d\n' % gt_num)
-        f.write('Prediction Number: %d\n' % pred_num)
-        f.write('Rand Index: %f\n' % ri)
-        f.write('Normalized Mutual Index: %f\n' % nmi)
-
-def get_colors(num_colors):
-    colors=[]
-    for i in np.arange(0., 360., 360. / num_colors):
-        hue = i/360.
-        lightness = (50 + np.random.rand() * 10)/100.
-        saturation = (90 + np.random.rand() * 10)/100.
-        colors.append(colorsys.hls_to_rgb(hue, lightness, saturation))
-    return colors
 
 def readObj(fn):
     vx = []
@@ -81,7 +72,6 @@ def drawRes(xyz, lidx, labels, max_label):
     line_set.colors = o3d.utility.Vector3dVector(colors[:, :3])
     o3d.visualization.draw_geometries([line_set])
 
-
 def show_mean_shift_cluster(xyz, lidx):
     bandwidth = estimate_bandwidth(xyz, quantile=0.1, n_samples=28)
     ms = MeanShift(bandwidth=bandwidth, bin_seeding=True)
@@ -114,19 +104,11 @@ def run_test(filepath):
     pred_labels, pred_num = show_mean_shift_cluster(vertices, lidx)
     save_cluster_vg(filepath[:-4] + '_ms.vg', vertices, lidx, pred_labels, pred_num)
     np.savetxt(filepath[:-4] + '_ms.txt', pred_labels, fmt="%d")
-    '''
-            primitive = f['primitive_id'][i]
-            codebook = f['codebook'][i]
-            gt_labels, gt_num = getGTLabel(codebook,primitive)
-            rand_index = metrics.rand_score(gt_labels, pred_labels)
-            nmi = metrics.normalized_mutual_info_score(gt_labels, pred_labels)
-            save_cluster_index(gt_num, pred_num, rand_index, nmi, i)
-    '''
 
 if __name__ == '__main__':
 
 #pcd = o3d.io.read_point_cloud("../../Downloads/0_pred.ply")
 #o3d.visualization.draw_geometries([pcd])
 #p_t, p_f = loadply("../../Downloads/out/1_pred.ply")
-    run_test('/home/hiko/Downloads/data/dispatch/Fig101_line.obj')
+    run_test('/home/hiko/Downloads/data/dispatch/toy_data1_line.obj')
 

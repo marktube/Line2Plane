@@ -2,7 +2,6 @@ import open3d as o3d
 import numpy as np
 import colorsys
 import matplotlib.pyplot as plt
-from sklearn import metrics
 
 def get_colors(num_colors):
     colors=[]
@@ -42,14 +41,6 @@ def save_cluster_vg(fn, xyz, lidx, labels, max_label):
             fo.write("\n")
             fo.write("num_children: 0\n")
 
-def save_cluster_index(gt_num, pred_num, ri, nmi, i):
-    fn = 'Tree' + str(i) + '_cluster_index.txt'
-    with open(fn, 'w') as f:
-        f.write('Ground Truth Number: %d\n' % gt_num)
-        f.write('Prediction Number: %d\n' % pred_num)
-        f.write('Rand Index: %f\n' % ri)
-        f.write('Normalized Mutual Index: %f\n' % nmi)
-
 def readObj(fn):
     vx = []
     lidx = []
@@ -82,12 +73,11 @@ def drawRes(xyz, lidx, labels, max_label):
     line_set.colors = o3d.utility.Vector3dVector(colors[:, :3])
     o3d.visualization.draw_geometries([line_set])
 
-
 def show_dbscan_cluster(xyz, lidx):
     pcd = o3d.geometry.PointCloud()
     pcd.points = o3d.utility.Vector3dVector(xyz)
     with o3d.utility.VerbosityContextManager(o3d.utility.VerbosityLevel.Debug) as cm:
-        labels = np.array(pcd.cluster_dbscan(eps=0.95, min_points=20, print_progress=True))
+        labels = np.array(pcd.cluster_dbscan(eps=0.5, min_points=30, print_progress=True))
     max_label = labels.max()
     print(f"point cloud has {max_label + 1} clusters")
     #for i in range(max_label):
@@ -118,14 +108,8 @@ def run_test(filepath):
     pred_labels, pred_num = show_dbscan_cluster(vertices, lidx)
     save_cluster_vg(filepath[:-4]+'_db.vg', vertices, lidx, pred_labels, pred_num)
     np.savetxt(filepath[:-4] + '_db.txt', pred_labels, fmt="%d")
-    '''pred_labels, pred_num = show_dbscan_cluster(xyz, i)
-            primitive = f['primitive_id'][i]
-            codebook = f['codebook'][i]
-            gt_labels, gt_num = getGTLabel(codebook, primitive)
-            rand_index = metrics.rand_score(gt_labels, pred_labels)
-            nmi = metrics.normalized_mutual_info_score(gt_labels, pred_labels)
-            save_cluster_index(gt_num, pred_num, rand_index, nmi, i)'''
+
 
 if __name__ == '__main__':
     #print(o3d.__version__)
-    run_test('/home/hiko/Downloads/data/dispatch/Fig101_line.obj')
+    run_test('/home/hiko/Downloads/data/dispatch/toy_data1_line.obj')
