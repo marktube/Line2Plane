@@ -269,13 +269,15 @@ def computeClusterIndex(fpath):
     gt_label = np.loadtxt(fpath, dtype=int)
     db_label = np.loadtxt(fpath[:-6]+'line_db.txt', dtype=int)
     ms_label = np.loadtxt(fpath[:-6]+'line_ms.txt', dtype=int)
+    ransac_label = np.loadtxt(fpath[:-6]+'line_ransac.txt', dtype=int)
     ours_label = np.loadtxt(fpath[:-6] + 'line_ours.txt', dtype=int)
     print(type(ms_label[0]))
     db_ri = metrics.rand_score(gt_label, db_label)
     db_nmi = metrics.normalized_mutual_info_score(gt_label, db_label)
     ms_ri = metrics.rand_score(gt_label, ms_label)
     ms_nmi = metrics.normalized_mutual_info_score(gt_label, ms_label)
-
+    ransac_ri = metrics.rand_score(gt_label, ransac_label)
+    ransac_nmi = metrics.normalized_mutual_info_score(gt_label, ransac_label)
     ours_ri = metrics.rand_score(gt_label, ours_label)
     ours_nmi = metrics.normalized_mutual_info_score(gt_label, ours_label)
 
@@ -287,6 +289,9 @@ def computeClusterIndex(fpath):
         f.write('Mean shift Prediction Number: %d\n' % (np.max(ms_label) + 2))
         f.write('Mean shift Rand Index: %f\n' % ms_ri)
         f.write('Mean shift Normalized Mutual Index: %f\n' % ms_nmi)
+        f.write('RANSAC Prediction Number: %d\n' % (np.max(ransac_label) + 2))
+        f.write('RANSAC Rand Index: %f\n' % ransac_ri)
+        f.write('RANSAC Normalized Mutual Index: %f\n' % ransac_nmi)
         f.write('Ours Prediction Number: %d\n' % (np.max(ours_label) + 1))
         f.write('Ours Rand Index: %f\n' % ours_ri)
         f.write('Ours Normalized Mutual Index: %f\n' % ours_nmi)
@@ -312,5 +317,5 @@ if __name__ == '__main__':
     genLines(1, prefix1)
     genLines(1, prefix2)
     genLines(1, prefix3)'''
-    computeClusterIndex('/home/hiko/Downloads/data/dispatch/toy_data1_gt.txt')
+    computeClusterIndex('/home/hiko/Downloads/data/dispatch/Fig101_gt.txt')
 

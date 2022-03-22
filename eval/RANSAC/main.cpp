@@ -157,13 +157,18 @@ int savePrimitives(const char *filename, MiscLib::Vector<std::pair<MiscLib::RefC
     outfs << "num_points: " << pc.size() - remaining << std::endl;
     unsigned int szsum = 0;
     MiscLib::Vector<std::pair<MiscLib::RefCountPtr<PrimitiveShape>, std::size_t>>::const_iterator shape_itr = shapes.begin();
+    
+    // set output precison
+    outfs.flags(std::ios::fixed);
+    outfs.precision(6);
 
     for (; shape_itr != shapes.end(); ++shape_itr)
     {
         unsigned int pend = pc.size() - szsum;
         unsigned int pstart = pc.size() - szsum - shape_itr->second;
         for (size_t i = pstart; i < pend; i++)
-        {
+        {  
+            
             outfs << pc[i].pos.getValue()[0] << " " << pc[i].pos.getValue()[1] << " " << pc[i].pos.getValue()[2] << std::endl;
         }
         szsum += shape_itr->second;
@@ -271,7 +276,7 @@ int main(int argc, char **argv)
     ransacOptions.m_bitmapEpsilon = .02f * pc.getScale(); // set bitmap resolution to .02f of bounding box width
                                                           // NOTE: This threshold is NOT multiplied internally!
     ransacOptions.m_normalThresh = .8f;                   // this is the cos of the maximal normal deviation
-    ransacOptions.m_minSupport = 300;                      // this is the minimal numer of points required for a primitive
+    ransacOptions.m_minSupport = 30;                      // this is the minimal numer of points required for a primitive
     ransacOptions.m_probability = .001f;                  // this is the "probability" with which a primitive is overlooked
 
     RansacShapeDetector detector(ransacOptions); // the detector object
