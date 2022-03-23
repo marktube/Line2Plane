@@ -3,6 +3,7 @@ import os
 import colorsys
 import numpy as np
 from sklearn import metrics
+from scipy.spatial import Delaunay
 
 def get_colors(num_colors):
     colors=[]
@@ -154,10 +155,12 @@ def genLines(mode,fpath):
         clusters.append(planes)
     # generate lines
     vertices = []
+    lidx = []
     gt_label = []
-    lineCountPerFace = 90
-    if mode:
+    lineCountPerFace = 6
+    if mode==1:
         # random generate
+        count = 1
         for i in range(len(clusters)):
             xyz = clusters[i]['v']
             faces = clusters[i]['f']
@@ -172,7 +175,42 @@ def genLines(mode,fpath):
                     weight2 = weight2 / np.sum(weight2)
                     vertices.append(weight1.dot(vt))
                     vertices.append(weight2.dot(vt))
+                    lidx.append([count, count+1])
                     gt_label.append(i)
+                    count += 2
+    elif mode==2:
+        # delaunay triangulation
+        count=1
+        for i in range(len(clusters)):
+            xyz = clusters[i]['v']
+            faces = clusters[i]['f']
+            random_xyz = []
+            pa = []
+            for j in range(len(faces)):
+                vt = np.array(faces[j],dtype=int)
+                vt = xyz[vt]
+                #print(vt)
+                random_xyz.append(vt[0].tolist())
+                vertices.append(vt[0].tolist())
+                random_xyz.append(vt[1].tolist())
+                vertices.append(vt[1].tolist())
+                for k in range(lineCountPerFace):
+                    weight = np.random.random(len(vt))
+                    weight = weight / np.sum(weight)
+                    pp = weight.dot(vt)
+                    random_xyz.append(pp)
+                    vertices.append(pp)
+            random_xyz = np.array(random_xyz)
+            tri = Delaunay(random_xyz)
+            for j in range(len(tri.simplices)):
+                tmp = tri.simplices[j]
+                lidx.append([count + tmp[0],count + tmp[1]])
+                gt_label.append(i)
+                lidx.append([count + tmp[1], count + tmp[2]])
+                gt_label.append(i)
+                lidx.append([count + tmp[2], count + tmp[0]])
+                gt_label.append(i)
+            count += len(random_xyz)
     else:
         pass
     # save lines obj
@@ -180,9 +218,9 @@ def genLines(mode,fpath):
         count = len(vertices)
         for i in range(count):
             fw.write('v %f %f %f\n'%(vertices[i][0],vertices[i][1],vertices[i][2]))
-        count = int(count / 2)
+        count = len(lidx)
         for i in range(count):
-            fw.write('l %d %d\n'%(i*2+1,i*2+2))
+            fw.write('l %d %d\n'%(lidx[i][0],lidx[i][1]))
     # save gt labels
     gt_label = np.array(gt_label)
     np.savetxt(fpath + str(mode) + '_gt.txt', gt_label, fmt="%d")
@@ -317,5 +355,6 @@ if __name__ == '__main__':
     genLines(1, prefix1)
     genLines(1, prefix2)
     genLines(1, prefix3)'''
-    computeClusterIndex('/home/hiko/Downloads/data/dispatch/Fig101_gt.txt')
-
+    #computeClusterIndex('/home/hiko/Downloads/data/dispatch/toy_data1_gt.txt')
+    prefix1 = '/home/hiko/Downloads/data/dispatch/toy_data'
+    genLines(2, prefix1)

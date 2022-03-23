@@ -116,7 +116,7 @@ def show_ransac_cluster(vertices, lidx, labels):
 
     max_label = labels.max()
     llabels = np.array(llabels)
-    #drawRes(vertices, lidx, llabels, max_label)
+    drawRes(vertices, lidx, llabels, max_label)
 
     return llabels, max_label + 1
 
@@ -130,4 +130,4 @@ def run_reindex(opath, vpath):
 
 if __name__ == '__main__':
     #print(o3d.__version__)
-    run_reindex('/home/hiko/Downloads/data/dispatch/Fig101_line.obj', '/home/hiko/Workspace/Line2Plane/eval/RANSAC/build/out.vg')
+    run_reindex('/home/hiko/Downloads/data/dispatch/toy_data1_line.obj', '/home/hiko/Workspace/Line2Plane/eval/RANSAC/build/out.vg')
