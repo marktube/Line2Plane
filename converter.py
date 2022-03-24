@@ -157,7 +157,7 @@ def genLines(mode,fpath):
     vertices = []
     lidx = []
     gt_label = []
-    lineCountPerFace = 6
+    lineCountPerFace = 10
     if mode==1:
         # random generate
         count = 1
@@ -180,20 +180,18 @@ def genLines(mode,fpath):
                     count += 2
     elif mode==2:
         # delaunay triangulation
-        count=1
         for i in range(len(clusters)):
             xyz = clusters[i]['v']
             faces = clusters[i]['f']
             random_xyz = []
-            pa = []
+            count = len(vertices)
             for j in range(len(faces)):
                 vt = np.array(faces[j],dtype=int)
                 vt = xyz[vt]
                 #print(vt)
-                random_xyz.append(vt[0].tolist())
-                vertices.append(vt[0].tolist())
-                random_xyz.append(vt[1].tolist())
-                vertices.append(vt[1].tolist())
+                '''for k in range(len(vt)):
+                    random_xyz.append(vt[k])
+                    vertices.append(vt[k])'''
                 for k in range(lineCountPerFace):
                     weight = np.random.random(len(vt))
                     weight = weight / np.sum(weight)
@@ -204,13 +202,12 @@ def genLines(mode,fpath):
             tri = Delaunay(random_xyz)
             for j in range(len(tri.simplices)):
                 tmp = tri.simplices[j]
-                lidx.append([count + tmp[0],count + tmp[1]])
+                lidx.append([count + tmp[0]+1, count + tmp[1]+1])
                 gt_label.append(i)
-                lidx.append([count + tmp[1], count + tmp[2]])
+                lidx.append([count + tmp[1]+1, count + tmp[2]+1])
                 gt_label.append(i)
-                lidx.append([count + tmp[2], count + tmp[0]])
+                lidx.append([count + tmp[2]+1, count + tmp[0]+1])
                 gt_label.append(i)
-            count += len(random_xyz)
     else:
         pass
     # save lines obj
@@ -355,6 +352,6 @@ if __name__ == '__main__':
     genLines(1, prefix1)
     genLines(1, prefix2)
     genLines(1, prefix3)'''
-    #computeClusterIndex('/home/hiko/Downloads/data/dispatch/toy_data1_gt.txt')
-    prefix1 = '/home/hiko/Downloads/data/dispatch/toy_data'
-    genLines(2, prefix1)
+    computeClusterIndex('/home/hiko/Downloads/data/dispatch/toy_data2_gt.txt')
+    '''prefix1 = '/home/hiko/Downloads/data/dispatch/Fig10'
+    genLines(2, prefix1)'''
