@@ -77,7 +77,7 @@ def show_dbscan_cluster(xyz, lidx):
     pcd = o3d.geometry.PointCloud()
     pcd.points = o3d.utility.Vector3dVector(xyz)
     with o3d.utility.VerbosityContextManager(o3d.utility.VerbosityLevel.Debug) as cm:
-        labels = np.array(pcd.cluster_dbscan(eps=1.6, min_points=5, print_progress=True))
+        labels = np.array(pcd.cluster_dbscan(eps=0.1, min_points=10, print_progress=True))
     max_label = labels.max()
     print(f"point cloud has {max_label + 1} clusters")
     #for i in range(max_label):
@@ -107,9 +107,9 @@ def run_test(filepath):
     vertices, lidx = readObj(filepath)
     pred_labels, pred_num = show_dbscan_cluster(vertices, lidx)
     save_cluster_vg(filepath[:-4]+'_db.vg', vertices, lidx, pred_labels, pred_num)
-    np.savetxt(filepath[:-4] + '_db.txt', pred_labels, fmt="%d")
+    #np.savetxt(filepath[:-4] + '_db.txt', pred_labels, fmt="%d")
 
 
 if __name__ == '__main__':
     #print(o3d.__version__)
-    run_test('/home/hiko/Downloads/data/dispatch/Fig103_line.obj')
+    run_test('/home/hiko/Downloads/data/real/Line3D++_office_crop.obj')

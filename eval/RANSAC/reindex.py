@@ -125,9 +125,9 @@ def run_reindex(opath, vpath):
     labels = readVg(vpath, vx)
     pred_labels, pred_num = show_ransac_cluster(vx, lidx, labels)
     save_cluster_vg(opath[:-4] + '_ransac.vg', vx, lidx, pred_labels, pred_num)
-    np.savetxt(opath[:-4] + '_ransac.txt', pred_labels, fmt="%d")
+    #np.savetxt(opath[:-4] + '_ransac.txt', pred_labels, fmt="%d")
 
 
 if __name__ == '__main__':
     #print(o3d.__version__)
-    run_reindex('/home/hiko/Downloads/data/dispatch/Fig103_line.obj', '/home/hiko/Workspace/Line2Plane/eval/RANSAC/build/out.vg')
+    run_reindex('/home/hiko/Downloads/data/real/Line3D++_office_crop.obj', '/home/hiko/Workspace/Line2Plane/eval/RANSAC/build/out.vg')
