@@ -276,7 +276,7 @@ int main(int argc, char **argv)
     ransacOptions.m_bitmapEpsilon = .02f * pc.getScale(); // set bitmap resolution to .02f of bounding box width
                                                           // NOTE: This threshold is NOT multiplied internally!
     ransacOptions.m_normalThresh = .8f;                   // this is the cos of the maximal normal deviation
-    ransacOptions.m_minSupport = 7;                      // this is the minimal numer of points required for a primitive
+    ransacOptions.m_minSupport = 18;                      // this is the minimal numer of points required for a primitive
     ransacOptions.m_probability = .001f;                  // this is the "probability" with which a primitive is overlooked
 
     RansacShapeDetector detector(ransacOptions); // the detector object

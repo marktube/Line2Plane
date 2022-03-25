@@ -73,7 +73,7 @@ def drawRes(xyz, lidx, labels, max_label):
     o3d.visualization.draw_geometries([line_set])
 
 def show_mean_shift_cluster(xyz, lidx):
-    bandwidth = estimate_bandwidth(xyz, quantile=0.1, n_samples=20)
+    bandwidth = estimate_bandwidth(xyz, quantile=0.1, n_samples=28)
     ms = MeanShift(bandwidth=bandwidth, bin_seeding=True)
     ms.fit(xyz)
     labels = ms.labels_
@@ -110,5 +110,5 @@ if __name__ == '__main__':
 #pcd = o3d.io.read_point_cloud("../../Downloads/0_pred.ply")
 #o3d.visualization.draw_geometries([pcd])
 #p_t, p_f = loadply("../../Downloads/out/1_pred.ply")
-    run_test('/home/hiko/Downloads/data/dispatch/toy_data2_line.obj')
+    run_test('/home/hiko/Downloads/data/dispatch/Fig103_line.obj')
 

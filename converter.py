@@ -220,7 +220,7 @@ def genLines(mode,fpath):
                 cen = np.ones(len(vt)) / len(vt)
                 cen = cen.dot(vt)
                 dis = cen - vt
-                for k in range(lineCountPerFace):
+                for k in range(1, lineCountPerFace):
                     weight = k / lineCountPerFace
                     new_xyz = vt + (dis * weight)
                     vertices.extend(new_xyz.tolist())
@@ -230,11 +230,6 @@ def genLines(mode,fpath):
                         lidx.append([lid1, lid2])
                         gt_label.append(i)
                     count += len(new_xyz)
-
-
-
-
-
 
     # save lines obj
     with open(fpath + str(mode) + '_line.obj', 'w') as fw:
@@ -378,6 +373,6 @@ if __name__ == '__main__':
     genLines(1, prefix1)
     genLines(1, prefix2)
     genLines(1, prefix3)'''
-    #computeClusterIndex('/home/hiko/Downloads/data/dispatch/toy_data2_gt.txt')
-    prefix1 = '/home/hiko/Downloads/data/dispatch/Fig10'
-    genLines(3, prefix1)
+    computeClusterIndex('/home/hiko/Downloads/data/dispatch/Fig103_gt.txt')
+    '''prefix1 = '/home/hiko/Downloads/data/dispatch/Fig10'
+    genLines(3, prefix1)'''
