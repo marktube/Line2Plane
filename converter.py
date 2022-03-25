@@ -363,8 +363,8 @@ if __name__ == '__main__':
     #line2wire('/home/hiko/Downloads/LineData/Line3D++_sixuegongyu.obj')
     #line2wire('/home/hiko/Downloads/LineData/Line3D++__thu_ocean.obj')
     #wire2line('/home/hiko/Downloads/LineData/LSD_office.obj')
-    #wire2line('/home/hiko/Workspace/line3dpp-vsfm-gta5-16-face-inf-var.obj')
-    #wire2line('/home/hiko/Downloads/compare/DJI_modified_line.obj')
+    wire2line('/home/hiko/Downloads/data/real/LSD_sixuegongyu_cut.obj')
+    wire2line('/home/hiko/Downloads/data/real/Line3D++_office_crop.obj')
     #format2jpg('/home/hiko/Workspace/11_1lines/Andalusian/images')
 
     '''prefix1 = '/home/hiko/Downloads/data/dispatch/Fig10'
@@ -373,6 +373,6 @@ if __name__ == '__main__':
     genLines(1, prefix1)
     genLines(1, prefix2)
     genLines(1, prefix3)'''
-    computeClusterIndex('/home/hiko/Downloads/data/dispatch/Fig103_gt.txt')
+    #computeClusterIndex('/home/hiko/Downloads/data/dispatch/Fig103_gt.txt')
     '''prefix1 = '/home/hiko/Downloads/data/dispatch/Fig10'
     genLines(3, prefix1)'''

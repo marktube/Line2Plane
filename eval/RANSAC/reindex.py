@@ -130,4 +130,4 @@ def run_reindex(opath, vpath):
 
 if __name__ == '__main__':
     #print(o3d.__version__)
-    run_reindex('/home/hiko/Downloads/data/real/Line3D++_office_crop.obj', '/home/hiko/Workspace/Line2Plane/eval/RANSAC/build/out.vg')
+    run_reindex('/home/hiko/Downloads/data/real/LSD_sixuegongyu_cut.obj', '/home/hiko/Workspace/Line2Plane/eval/RANSAC/build/out.vg')

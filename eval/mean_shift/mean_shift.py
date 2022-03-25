@@ -110,5 +110,5 @@ if __name__ == '__main__':
 #pcd = o3d.io.read_point_cloud("../../Downloads/0_pred.ply")
 #o3d.visualization.draw_geometries([pcd])
 #p_t, p_f = loadply("../../Downloads/out/1_pred.ply")
-    run_test('/home/hiko/Downloads/data/real/Line3D++_office_crop.obj')
+    run_test('/home/hiko/Downloads/data/real/LSD_sixuegongyu_cut.obj')
 
