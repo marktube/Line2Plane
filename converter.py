@@ -157,7 +157,7 @@ def genLines(mode,fpath):
     vertices = []
     lidx = []
     gt_label = []
-    lineCountPerFace = 10
+    lineCountPerFace = 3
     if mode==1:
         # random generate
         count = 1
@@ -208,8 +208,34 @@ def genLines(mode,fpath):
                 gt_label.append(i)
                 lidx.append([count + tmp[2]+1, count + tmp[0]+1])
                 gt_label.append(i)
-    else:
-        pass
+    elif mode==3:
+        # contour
+        for i in range(len(clusters)):
+            xyz = clusters[i]['v']
+            faces = clusters[i]['f']
+            count = len(vertices)
+            for j in range(len(faces)):
+                vt = np.array(faces[j], dtype=int)
+                vt = xyz[vt]
+                cen = np.ones(len(vt)) / len(vt)
+                cen = cen.dot(vt)
+                dis = cen - vt
+                for k in range(lineCountPerFace):
+                    weight = k / lineCountPerFace
+                    new_xyz = vt + (dis * weight)
+                    vertices.extend(new_xyz.tolist())
+                    for c in range(len(new_xyz)):
+                        lid1 = c + count + 1
+                        lid2 = (c+1) % len(new_xyz) + count + 1
+                        lidx.append([lid1, lid2])
+                        gt_label.append(i)
+                    count += len(new_xyz)
+
+
+
+
+
+
     # save lines obj
     with open(fpath + str(mode) + '_line.obj', 'w') as fw:
         count = len(vertices)
@@ -352,6 +378,6 @@ if __name__ == '__main__':
     genLines(1, prefix1)
     genLines(1, prefix2)
     genLines(1, prefix3)'''
-    computeClusterIndex('/home/hiko/Downloads/data/dispatch/toy_data2_gt.txt')
-    '''prefix1 = '/home/hiko/Downloads/data/dispatch/Fig10'
-    genLines(2, prefix1)'''
+    #computeClusterIndex('/home/hiko/Downloads/data/dispatch/toy_data2_gt.txt')
+    prefix1 = '/home/hiko/Downloads/data/dispatch/Fig10'
+    genLines(3, prefix1)
