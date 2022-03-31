@@ -4,6 +4,14 @@ import colorsys
 import numpy as np
 from sklearn import metrics
 from scipy.spatial import Delaunay
+'''
+Unless you pass in the Qhull option “QJ”, 
+Qhull does not guarantee that each input point appears as 
+a vertex in the Delaunay triangulation. 
+Omitted points are listed in the coplanar attribute.
+https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.Delaunay.html
+'''
+
 
 def get_colors(num_colors):
     colors=[]
@@ -199,7 +207,7 @@ def genLines(mode,fpath):
                     random_xyz.append(pp)
                     vertices.append(pp)
             random_xyz = np.array(random_xyz)
-            tri = Delaunay(random_xyz)
+            tri = Delaunay(random_xyz)#, qhull_options='QJ')
             for j in range(len(tri.simplices)):
                 tmp = tri.simplices[j]
                 lidx.append([count + tmp[0]+1, count + tmp[1]+1])
