@@ -11,13 +11,16 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--volume', type=int, default=29, help='Volumes to use [default: volume 2]')
 parser.add_argument('--line_data', default='/home/hiko/Downloads/data/dispatch/Fig103_line.obj', help='Line data input filepath [default: ]')
 parser.add_argument('--out', default='', help='Line data output filepath [default: {input filepath_[volume]}.vg]')
-parser.add_argument('--gui', default='true', help='true or false [default: false]')
+parser.add_argument('--gui', default='true', help='true or false for showing graphic result [default: false]')
+parser.add_argument('--sr', default=0.5, help='sigma ratio can control the variance [default: 1.0]')
 FLAGS = parser.parse_args()
 
 NUM_VOLUMES=FLAGS.volume
 LINE_DATA=FLAGS.line_data
 OUTPUT=FLAGS.out
 IS_GUI=FLAGS.gui
+SR=FLAGS.sr
+
 if not os.path.exists(LINE_DATA):
     print('Error: input file not exist')
     exit(0)
@@ -32,7 +35,7 @@ if IS_GUI=='true':
 else:
     IS_GUI=False
 
-test=LScene()
+test=LScene(SR)
 test.readObjFile(LINE_DATA)
 test.Cluster(NUM_VOLUMES)
 

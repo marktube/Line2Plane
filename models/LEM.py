@@ -9,7 +9,7 @@ import torch
 from progress.bar import IncrementalBar
 
 class LEM:
-    def __init__(self, volume, limit_min, limit_max):
+    def __init__(self, volume, limit_min, limit_max, sigma_ratio):
         '''
         set initial values for EM algorithm
         n_f: number of faces
@@ -20,7 +20,8 @@ class LEM:
         '''
         self.n_f = volume * 3
         self.p_f = np.ones(self.n_f)/self.n_f
-        self.sigma = np.ones(self.n_f)*np.min(limit_max-limit_min)/(volume/2)#np.ones(self.n_f)*math.sqrt(np.sum((limit_max-limit_min)**2))/(volume*math.sqrt(3))
+        print(sigma_ratio)
+        self.sigma = np.ones(self.n_f)*np.min(limit_max-limit_min)/(volume*sigma_ratio)#np.ones(self.n_f)*math.sqrt(np.sum((limit_max-limit_min)**2))/(volume*math.sqrt(3))
         self.f_v = np.empty([3,volume])
         tmp = np.zeros([3, self.n_f])
         for j in range(3):

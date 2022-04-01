@@ -18,13 +18,14 @@ def get_colors(num_colors):
     return np.array(colors)
 
 class LScene:
-    def __init__(self):
+    def __init__(self, sr):
         self.vertices=None
         self.lines=None
         self.planes=None
         self.cluster_id=None
         self.max_coord=None
         self.min_coord=None
+        self.sigma_ration=sr
 
     # read lines .obj file
     def readObjFile(self, filePath):
@@ -78,7 +79,7 @@ class LScene:
 
     # cluster lines
     def Cluster(self, volume):
-        model = LEM.LEM(volume, self.min_coord, self.max_coord)
+        model = LEM.LEM(volume, self.min_coord, self.max_coord, self.sigma_ration)
         p1xyz = self.vertices[self.lines[:, 0]]
         p2xyz = self.vertices[self.lines[:, 1]]
         self.planes, self.cluster_id = model.iter(180, p1xyz, p2xyz)
@@ -114,7 +115,7 @@ class LScene:
 
 
     def saveSceneAsVG(self, filePath):
-        np.savetxt(filePath[:-5] + 'ours.txt', self.cluster_id, fmt="%d")
+        #np.savetxt(filePath[:-5] + 'ours.txt', self.cluster_id, fmt="%d") # use for comparing with GT
         with open(filePath, "w") as fo:
             fo.write("num_points: %d\n"%len(self.vertices))
             for i in range(self.vertices.shape[0]):
