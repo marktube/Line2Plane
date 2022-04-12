@@ -1,7 +1,9 @@
 # Plane reconstruction from 3D lines
+### Overview
+This is the code repository implementing the "plane reconstruction from 3D lines" part of the paper "Surface Reconstruction from Multi-view Line Cloud".
 
 ### Input
-3D lines set, obj file.
+3D line segments set, obj file.
 
 ### Output
 Planes fitting lines, vg file.
@@ -11,7 +13,7 @@ It can be resolved as a clustering problem like GMM(Gaussian Mixture Model), usi
 the probablity of lines is decided by probability of planes and conditional 
 probability of lines giving plane.
 
-Here I give the details of obtaining the candidate planes ($\{f_1,f_2,\cdots,f_k\}$\,, where $k$ is unknown)
+Here I give the details of obtaining the candidate planes ($\{f_1,f_2,\cdots,f_k\}$, where $k$ is unknown)
 from a given set of 3D line segments $\mathcal{L}=\{l_1,l_2,\cdots,l_n\}$. 
 
 #### Geometry representation
@@ -24,13 +26,13 @@ $$
 f=\{\mathbf{v}:(a,b,c),\,\mathbf{n}:(n_x,n_y,n_z)\} \,\text{.}
 $$
 #### Probability modeling
-Assume I already know the $k$ which indicates the number of planes and the probability distribution of those
+Assume you already know the $k$ which indicates the number of planes and the probability distribution of those
 planes: $\mathrm{P}(f_1),\mathrm{P}(f_2),\cdots,\mathrm{P}(f_k),\,\sum_{j=1}^k\mathrm{P}(f_j)=1$\,. 
 Additionally, I give the conditional probability hypothesis:
 $$
 \mathrm{P}(l\,| f_j)=\frac1{\sqrt{2\pi}\sigma_j}\exp\{{-\frac{[(\mathbf{p}_1-\mathbf{v}_j)\cdot \mathbf{n}_j]^2+[(\mathbf{p}_2-\mathbf{v}_j)\cdot \mathbf{n}_j]^2}{2\sigma_j^2}}\}
 $$
-. Then, I can get the joint probability distribution of the line segment  $l$ and the plane $f_i$ by using Bayes' theorem:
+. Then, you can get the joint probability distribution of the line segment  $l$ and the plane $f_i$ by using Bayes' theorem:
 $$
 \mathrm{P}(l, f_j)=\mathrm{P}(l\,|f_j)\mathrm{P}(f_j)\,\text{.}
 $$
@@ -38,11 +40,11 @@ The marginal probability is exactly the probability that the line $l$ occurs:
 $$
 \mathrm{P}(l)=\sum_{j=1}^k\mathrm{P}(l\,|f_j)\mathrm{P}(f_j)\,\text{.}
 $$
-Since I get the probability of each sample line segment and each sample is regarded independent, I will maximize the likelihood function $\mathrm{P}(D|\theta)$ to get parameters of each plane $f_j$:
+Since you get the probability of each sample line segment and each sample is regarded independent, you will maximize the likelihood function $\mathrm{P}(D|\theta)$ to get parameters of each plane $f_j$:
 $$
 \max \prod_{i=1}^{n} \mathrm{P}(l_i)\,\text{.}
 $$
-Here I use $\theta$ to denote all parameters in our likelihood function of parameterized model.
+Here I use $\theta$ to denote all parameters in the likelihood function of parameterized model.
 
 #### Parameters estimation
 Since product of probabilities cost too much, I use log-likelihood instead:
@@ -76,7 +78,7 @@ $$
 Because the likelihood function contains implicit variable, I use EM algorithm to solve the maximum problem. In the expectation stage, let
 $$
 \begin{aligned}
-\mathrm{Q}(\theta,\theta^{(i)})=&\mathcal{E}[\ln\mathrm{P}(l,\gamma|\theta)|l,\theta^{(i)}]\\=&
+\mathrm{Q}(\theta,\theta^{(m)})=&\mathcal{E}[\ln\mathrm{P}(l,\gamma|\theta)|l,\theta^{(m)}]\\=&
 \mathcal{E}\left\{\sum_{j=1}^k\left\{c_j\ln P(f_j)+\sum_{i=1}^n\gamma_{ij}\left[\ln\frac1{\sqrt{2\pi}\sigma_j}-\frac{((\mathbf{p}_{i1}-\mathbf{v}_j)\cdot \mathbf{n}_j)^2+((\mathbf{p}_{i2}-\mathbf{v}_j)\cdot \mathbf{n}_j)^2}{2\sigma_j^2}\right]\right\}\right\}\\=&
 \sum_{j=1}^k\left\{\sum_{i=1}^n\mathcal{E}(\gamma_{ij})\ln P(f_j)+\sum_{i=1}^n\mathcal{E}(\gamma_{ij})\left[\ln\frac1{\sqrt{2\pi}\sigma_j}-\frac{((\mathbf{p}_{i1}-\mathbf{v}_j)\cdot \mathbf{n}_j)^2+((\mathbf{p}_{i2}-\mathbf{v}_j)\cdot \mathbf{n}_j)^2}{2\sigma_j^2}\right]\right\}
 \end{aligned}
@@ -90,13 +92,13 @@ $$
 \frac{P(f_j)P(l_i|f_j,\theta)}{\sum_{j=1}^kP(f_j)P(l_i|f_j,\theta)}
 \end{aligned}
 $$
-With $\hat \gamma_{ij},c_j=\sum_{i=1}^n\hat \gamma_{ij}$, I can easily get the $\mathrm{Q}$ function:
+With $\hat \gamma_{ij},c_j=\sum_{i=1}^n\hat \gamma_{ij}$, you can easily get the $\mathrm{Q}$ function:
 $$
-\mathrm{Q}(\theta,\theta^{(i)})=\sum_{j=1}^kc_j\ln P(f_j)+\sum_{i=1}^n\hat \gamma_{ij}\left[\ln\frac1{\sqrt{2\pi}\sigma_j}-\frac{((\mathbf{p}_{i1}-\mathbf{v}_j)\cdot \mathbf{n}_j)^2+((\mathbf{p}_{i2}-\mathbf{v}_j)\cdot \mathbf{n}_j)^2}{2\sigma_j^2}\right]
+\mathrm{Q}(\theta,\theta^{(m)})=\sum_{j=1}^kc_j\ln P(f_j)+\sum_{i=1}^n\hat \gamma_{ij}\left[\ln\frac1{\sqrt{2\pi}\sigma_j}-\frac{((\mathbf{p}_{i1}-\mathbf{v}_j)\cdot \mathbf{n}_j)^2+((\mathbf{p}_{i2}-\mathbf{v}_j)\cdot \mathbf{n}_j)^2}{2\sigma_j^2}\right]
 $$
-Next, in the maximum stage, I need maximize the $\mathrm{Q}$ function to get parameters $\theta^{(m)}$ in each iteration. The maximum problem could be formulated as:
+Next, in the maximum stage, you need maximize the $\mathrm{Q}$ function to get parameters $\theta^{(m)}$ in each iteration. The maximum problem could be formulated as:
 $$
-\max_{\theta}\,\mathrm{Q}(\theta,\theta^{(i)})\\
+\max_{\theta}\,\mathrm{Q}(\theta,\theta^{(m)})\\
 \begin{aligned}
 s.t. \sum_{j=1}^k\mathrm{P}(f_j)=1
 \end{aligned}
@@ -105,7 +107,7 @@ In general, I use Lagrange multiplier to convert the constrained optimization pr
 $$
 \mathcal{L}=\mathrm{Q}(\theta,\theta^{(m)})+\lambda\left[1-\sum_{j=1}^k\mathrm{P}(f_j)\right]\,\text{.}
 $$
-Then, I calculate the partial derivatives of Lagrange function for each parameter. Because our Lagrange function is a convex function, the function reaches maximum when all partial derivatives are 0 values.
+Then, calculate the partial derivatives of Lagrange function for each parameter. Because the Lagrange function is a convex function, the function reaches maximum when all partial derivatives are 0 values.
 As for $P(f_j)$:
 $$
 \frac{\partial\mathcal{L}}{\partial P(f_j)}=\frac{c_j}{P(f_j)}-\lambda=0\Rightarrow
@@ -113,7 +115,7 @@ c_j=\lambda P(f_j)\Rightarrow
 \sum_{j=1}^n c_j=\sum_{j=1}^n \lambda P(f_j)\Rightarrow
 \lambda=n\Rightarrow P(f_j)=\frac{c_j}{n}
 $$
-So I can get:
+So you can get:
 $$
 P(f_j)=\frac{c_j}{n}
 $$
@@ -121,7 +123,7 @@ For $\sigma_j$, let the partial derivative be 0:
 $$
 \frac{\partial \mathcal{L}}{\partial \sigma_j}=\sum_{i=1}^n \hat\gamma_{ij}\frac{((\mathbf{p}_{i1}-\mathbf{v}_j)\cdot \mathbf{n}_j)^2+((\mathbf{p}_{i2}-\mathbf{v}_j)\cdot \mathbf{n}_j)^2-\sigma_j^2}{\sigma_j^3}=0
 $$
-Then I have:
+Then you have:
 $$
 \sigma_j^2=\frac{\sum_{i=1}^n \hat\gamma_{ij}[((\mathbf{p}_{i1}-\mathbf{v}_j)\cdot \mathbf{n}_j)^2+((\mathbf{p}_{i2}-\mathbf{v}_j)\cdot \mathbf{n}_j)^2]}{\sum_{i=1}^n \hat\gamma_{ij}}
 $$
@@ -129,7 +131,7 @@ Similarly, let
 $$
 \frac{\partial\mathcal{L}}{\partial \mathbf{v}_j}=\sum_{i=1}^n\frac{\hat \gamma_{ij}}{\sigma_j^2}[\mathbf{n}_j^T(\mathbf{p}_{i1}-\mathbf{v}_j)\mathbf{n}_j+\mathbf{n}_j^T(\mathbf{p}_{i2}-\mathbf{v}_j)\mathbf{n}_j]=0
 $$
-Then, I can get:
+Then, you can get:
 
 $$
 \begin{gathered}
@@ -141,7 +143,7 @@ $$
 \end{gathered}
 $$
 
-Finally, setting the partial derivative as 0, I can get:
+Finally, setting the partial derivative as 0, you can get:
 $$
 \begin{gathered}
 \frac{\partial\mathcal{L}}{\partial \mathbf{n}_j}=
@@ -150,16 +152,16 @@ $$
 -\frac1{\sigma_j^2}\left\{\sum_{i=1}^n\hat\gamma_{ij}\left[(\mathbf{p}_{i1}-\mathbf{v}_j)(\mathbf{p}_{i1}-\mathbf{v}_j)^T +(\mathbf{p}_{i2}-\mathbf{v}_j)(\mathbf{p}_{i2}-\mathbf{v}_j)^T \right]\right\}\mathbf{n}_j=0
 \end{gathered}
 $$
-For convenient in the late discuss, we use matrix $\mathbf{A}$ to denote the matrix in the left of equal sign above:
+For convenient in the late discuss, use matrix $\mathbf{A}$ to denote the matrix in the left of equal sign above:
 $$
 A=\left\{\sum_{i=1}^n\hat\gamma_{ij}\left[(\mathbf{p}_{i1}-\mathbf{v}_j)(\mathbf{p}_{i1}-\mathbf{v}_j)^T +(\mathbf{p}_{i2}-\mathbf{v}_j)(\mathbf{p}_{i2}-\mathbf{v}_j)^T \right]\right\}
 $$
 . To solve the linear equation $\mathbf{A}\mathbf{n}_j=0$
-, considering the equation may have no non-zero solutions, we convert it to an optimization problem:
+, considering the equation may have no non-zero solutions, convert it to an optimization problem:
 $$
 \min_{\mathbf{n}_j}\Vert A\mathbf{n}_j\Vert
 $$
-. After adding the constraint of normal $\mathbf{n}_j$, we can get
+. After adding the constraint of normal $\mathbf{n}_j$,  you can get
 $$
 \begin{gathered}
 \min_{\mathbf{n}_j} \mathbf{n}_j^TA^TA\mathbf{n}_j\\
@@ -170,6 +172,24 @@ This problem is equal to the Rayleigh quotient problem. Since $\mathbf{A}$ is a 
 $$
 \mathbf{A}\mathbf{\hat n}_j=\lambda_{min}\mathbf{\hat n}_j \,\text{.}
 $$
+
+### Dependency
+The code is tested on Ubuntu 20.04. To install requirements, use the command below:
+```
+pip install -r requirements.txt
+```
+
+
+### Usage
+use the command below to test the clustering algorithm:
+```
+python main.py [-h] [--volume VOLUME] [--line_data LINE_DATA] [--out OUT] [--gui GUI] [--sr SR]
+
+```
+For more details of options, type the command below:
+```
+python main.py --help
+```
 
 ### Test Cases
 - DJI_cut.obj; 
