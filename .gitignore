@@ -1,6 +1,5 @@
 .idea*
 *.pyc
-notebook*
 data/longgang*
 data/3dstl*
 *.vg
