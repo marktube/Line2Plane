@@ -175,6 +175,9 @@ $$
 \mathbf{A}\mathbf{\hat n}_j=\lambda_{min}\mathbf{\hat n}_j \,\text{.}
 $$
 
+The numerical algorithm for estimating plane parameters is given below:
+![2](data/alg.png)
+
 ### Dependency
 The code is tested on Ubuntu 20.04. To install requirements, use the command below:
 ```
