@@ -94,9 +94,9 @@ $$
 \frac{P(f_j)P(l_i|f_j,\theta)}{\sum_{j=1}^kP(f_j)P(l_i|f_j,\theta)}
 \end{aligned}
 $$
-With $\hat \gamma_{ij},c_j=\sum_{i=1}^n\hat \gamma_{ij}$, you can easily get the $\mathrm{Q}$ function:
+With $\hat \gamma_{ij},\hat c_j=\sum_{i=1}^n\hat \gamma_{ij}$, you can easily get the $\mathrm{Q}$ function:
 $$
-\mathrm{Q}(\theta,\theta^{(m)})=\sum_{j=1}^kc_j\ln P(f_j)+\sum_{i=1}^n\hat \gamma_{ij}\left[\ln\frac1{\sqrt{2\pi}\sigma_j}-\frac{((\mathbf{p}_{i1}-\mathbf{v}_j)\cdot \mathbf{n}_j)^2+((\mathbf{p}_{i2}-\mathbf{v}_j)\cdot \mathbf{n}_j)^2}{2\sigma_j^2}\right]
+\mathrm{Q}(\theta,\theta^{(m)})=\sum_{j=1}^k\hat c_j\ln P(f_j)+\sum_{i=1}^n\hat \gamma_{ij}\left[\ln\frac1{\sqrt{2\pi}\sigma_j}-\frac{((\mathbf{p}_{i1}-\mathbf{v}_j)\cdot \mathbf{n}_j)^2+((\mathbf{p}_{i2}-\mathbf{v}_j)\cdot \mathbf{n}_j)^2}{2\sigma_j^2}\right]
 $$
 Next, in the maximum stage, you need maximize the $\mathrm{Q}$ function to get parameters $\theta^{(m)}$ in each iteration. The maximum problem could be formulated as:
 $$
@@ -112,14 +112,14 @@ $$
 Then, calculate the partial derivatives of Lagrange function for each parameter. Because the Lagrange function is a convex function, the function reaches maximum when all partial derivatives are 0 values.
 As for $P(f_j)$:
 $$
-\frac{\partial\mathcal{L}}{\partial P(f_j)}=\frac{c_j}{P(f_j)}-\lambda=0\Rightarrow
-c_j=\lambda P(f_j)\Rightarrow 
-\sum_{j=1}^n c_j=\sum_{j=1}^n \lambda P(f_j)\Rightarrow
-\lambda=n\Rightarrow P(f_j)=\frac{c_j}{n}
+\frac{\partial\mathcal{L}}{\partial P(f_j)}=\frac{\hat c_j}{P(f_j)}-\lambda=0\Rightarrow
+\hat c_j=\lambda P(f_j)\Rightarrow 
+\sum_{j=1}^k \hat c_j=\sum_{j=1}^k \lambda P(f_j)\Rightarrow
+\lambda=n
 $$
 So you can get:
 $$
-P(f_j)=\frac{c_j}{n}
+P(f_j)=\frac{\hat c_j}{n}
 $$
 For $\sigma_j$, let the partial derivative be 0: 
 $$
@@ -168,7 +168,7 @@ $$
 \begin{gathered}
 \min_{\mathbf{n}_j} \mathbf{n}_j^TA^TA\mathbf{n}_j\\
 s.t.\quad \mathbf{n}_j^T\mathbf{n}_j=1
-\end{gathered}\,\text{,}
+\end{gathered}
 $$
 This problem is equal to the Rayleigh quotient problem. Since $\mathbf{A}$ is a semi-positive definite symmetric matrix, $\mathbf{n}_j$ must be the eigenvector corresponding to the minimum eigenvalue that is
 $$

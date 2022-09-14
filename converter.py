@@ -87,22 +87,22 @@ def readVg(fn):
         pcount = int(num_str.split(':')[1])
         #print(pcount)
         for i in range(pcount):
-            line=fr.readline().strip()
-            values = line.split()
+            line = fr.readline().strip()
+            values = line.split(' ')
             pxyz.append([float(values[0]),float(values[1]),float(values[2])])
         #print(pxyz)
 
         num_str = fr.readline().strip()
         ccount = int(num_str.split(':')[1])
-        for i in range(ccount):
-            line=fr.readline().strip()
+        #for i in range(ccount):
+            #line=fr.readline().strip()
             # color info is not needed
         #print(ccount)
 
         num_str = fr.readline().strip()
         ncount = int(num_str.split(':')[1])
-        for i in range(ncount):
-            line=fr.readline().strip()
+        #for i in range(ncount):
+            #line=fr.readline().strip()
             # normal info is not needed
         #print(ncount)
 
@@ -125,11 +125,55 @@ def readVg(fn):
             gpcount = int(line.split(':')[1])
             print(gpcount)
             line = fr.readline().strip()
-            membid = [int(n) for n in line.split(' ')]
-            gmemid.append(membid)
+            if gpcount == 0:
+                gmemid.append([])
+            else:
+                membid = [int(n) for n in line.split(' ')]
+                gmemid.append(membid)
             fr.readline()  # num_children: 0
 
     return np.array(pxyz), np.array(gpara), gmemid
+
+def readGlobfit(fn):
+    pxyz = []
+    gpara = []
+    gmemid = []
+    with open(fn, "r") as fr:
+        line = fr.readline()
+        while line[0]=='#' or len(line)==0:
+            line = fr.readline()
+        numPoints = int(line.strip())
+        print(f'num p: {numPoints}')
+        while(numPoints>0):
+            line = fr.readline()
+            if line[0] == '#' or line[0]=='\n':
+                continue
+            numPoints -= 1
+            values = line.strip().split(' ')
+            pxyz.append([float(values[0]),float(values[1]),float(values[2])])
+
+        line = fr.readline()
+        while line[0]=='#' or line[0]=='\n':
+            line = fr.readline()
+        numPrimitives = int(line.strip())
+        print(f'num pr: {numPrimitives}')
+        for i in range(numPrimitives):
+            line =  fr.readline().strip()
+            while len(line)==0 or line[0] == '#':
+                line = fr.readline()
+            line = line
+            values = line.split(' ')
+            gpara.append([float(values[1]),float(values[2]),float(values[3]),float(values[4])])
+            line =fr.readline()
+            while line[0] == '#' or len(line)==0:
+                line = fr.readline()
+            line = line.strip()
+            values = line.split(' ')
+            tmp_mem = []
+            for j in range(1,len(values)):
+                tmp_mem.append(int(values[j]))
+            gmemid.append(tmp_mem)
+        return pxyz, gpara, gmemid
 
 def readObj(fn):
     vertices = []
@@ -360,6 +404,60 @@ def computeClusterIndex(fpath):
         f.write('Ours Rand Index: %f\n' % ours_ri)
         f.write('Ours Normalized Mutual Index: %f\n' % ours_nmi)
 
+def vg2globfit(fpath):
+    pxyz, gpara, gmemid = readVg(fpath)
+    with open(fpath[:-3] + '.globfit', 'w') as fw:
+        count = 0
+        sbuff = ""
+        for i in range(len(gmemid)):
+            for j in gmemid[i]:
+                count += 1
+                sbuff += f'\n{pxyz[j][0]} {pxyz[j][1]} {pxyz[j][2]} {gpara[i][0]} {gpara[i][1]} {gpara[i][2]} 0.99999'
+        fw.write('# Number of Points\n')
+        fw.write(f'{count}\n')
+        fw.write(f'# Here comes the {count} Points\n')
+        fw.write('# point_x point_y point_z normal_x normal_y normal_z confidence\n')
+        fw.write(sbuff)
+        fw.write('\n# End of Points\n\n')
+        fw.write('# Number of Primitives\n')
+        fw.write(f'{len(gpara)}\n\n')
+        fw.write(f'# Here comes the {len(gpara)} Primitives\n')
+        count = 0
+        for i in range(len(gpara)):
+            fw.write(f'# Primitive {i}\n')
+            fw.write('# plane normal_x normal_y normal_z d\n')
+            fw.write(f'plane {gpara[i][0]} {gpara[i][1]} {gpara[i][2]} {gpara[i][3]}\n')
+            fw.write('# points idx_1 idx_2 idx_3 ... \n')
+            fw.write('points')
+            for j in range(len(gmemid[i])):
+                fw.write(f' {count+j}')
+            count += len(gmemid[i])
+            fw.write('\n\n')
+        fw.write('# End of Primitives')
+
+def globfit2vg(fpath):
+    pxyz, gpara, gmemid = readGlobfit(fpath)
+    with open(fpath[:-8]+'_t.vg','w') as fo:
+        fo.write(f"num_points: {len(pxyz)}\n")
+        for i in range(len(pxyz)):
+            fo.write("%f %f %f\n" % (pxyz[i][0], pxyz[i][1], pxyz[i][2]))
+        fo.write("num_colors: 0\n")
+        fo.write("num_normals: 0\n")
+        fo.write("num_groups: %d\n" % len(gpara))
+        for i in range(len(gpara)):
+            fo.write("group_type: 0\n")
+            fo.write("num_group_parameters: 4\n")
+            fo.write("group_parameters: %f %f %f %f\n" % (gpara[i][0], gpara[i][1],
+                                                          gpara[i][2], gpara[i][3]))
+            fo.write("group_label: unknown\n")
+            fo.write("group_color: %f %f %f\n" % (0,0,0))
+            fo.write("group_num_points: %d\n" % len(gmemid[i]))
+            for j in gmemid[i]:
+                fo.write(str(j)+' ')
+            fo.write("\n")
+            fo.write("num_children: 0\n")
+
+
 if __name__ == '__main__':
     '''combineVg('/home/hiko/Workspace/Line2Plane/data/Barn+haoyu_cut6_7.vg',
               '/home/hiko/Workspace/Line2Plane/data/Barn+haoyu_res.vg',
@@ -371,8 +469,8 @@ if __name__ == '__main__':
     #line2wire('/home/hiko/Downloads/LineData/Line3D++_sixuegongyu.obj')
     #line2wire('/home/hiko/Downloads/LineData/Line3D++__thu_ocean.obj')
     #wire2line('/home/hiko/Downloads/LineData/LSD_office.obj')
-    wire2line('/home/hiko/Downloads/data/real/LSD_sixuegongyu_cut.obj')
-    wire2line('/home/hiko/Downloads/data/real/Line3D++_office_crop.obj')
+    #wire2line('/home/hiko/Downloads/data/real/LSD_sixuegongyu_cut.obj')
+    #wire2line('/home/hiko/Downloads/data/real/Line3D++_office_crop.obj')
     #format2jpg('/home/hiko/Workspace/11_1lines/Andalusian/images')
 
     '''prefix1 = '/home/hiko/Downloads/data/dispatch/Fig10'
@@ -384,3 +482,9 @@ if __name__ == '__main__':
     #computeClusterIndex('/home/hiko/Downloads/data/dispatch/Fig103_gt.txt')
     '''prefix1 = '/home/hiko/Downloads/data/dispatch/Fig10'
     genLines(3, prefix1)'''
+    vg2globfit('/home/hiko/Downloads/data/real/LSD_sixuegongyu_cut_glob.vg')
+    #vg2globfit('/home/hiko/Downloads/data/real/Line3D++_office_crop_ransac.vg')
+    #vg2globfit('/home/hiko/Downloads/data/dispatch/Fig103_line_ransac.vg')
+    #vg2globfit('/home/hiko/Downloads/data/dispatch/other_ball1_line_ransac.vg')
+    #vg2globfit('/home/hiko/Downloads/data/dispatch/toy_data2_line_ransac.vg')
+    #globfit2vg('/home/hiko/Downloads/models/DJI/res/DJI_cut_6_ea.globfit')

@@ -9,6 +9,7 @@
 #include <ctime>
 #include <string.h>
 #include <cstring>
+#include<iomanip>
 
 float ctrans(float m1, float m2, float hue)
 {
@@ -220,7 +221,7 @@ int savePrimitives(const char *filename, MiscLib::Vector<std::pair<MiscLib::RefC
         const Plane &pl = dynamic_cast<const PlanePrimitiveShape *>(primitive)->Internal();
         const Vec3f &p = pl.getPosition();
         const Vec3f &n = pl.getNormal();
-        outfs << "group_parameters: " << n.getValue()[0] << " " << n.getValue()[1] << " " << n.getValue()[2] << " ";
+        outfs << "group_parameters: " << std::setprecision(8) << n.getValue()[0] << " " << n.getValue()[1] << " " << n.getValue()[2] << " ";
         outfs << -p.dot(n) << std::endl;
         outfs << "group_label: unknown" << std::endl;
         outfs << "group_color: " << colors[i].getValue()[0] << " " << colors[i].getValue()[1]
