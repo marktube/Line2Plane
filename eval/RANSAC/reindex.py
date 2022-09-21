@@ -124,10 +124,14 @@ def run_reindex(opath, vpath):
     vx, lidx = readObj(opath)
     labels = readVg(vpath, vx)
     pred_labels, pred_num = show_ransac_cluster(vx, lidx, labels)
-    save_cluster_vg(opath[:-4] + '_ransac.vg', vx, lidx, pred_labels, pred_num)
-    #np.savetxt(opath[:-4] + '_ransac.txt', pred_labels, fmt="%d")
+    save_cluster_vg(opath[:-4] + '_pr_res.vg', vx, lidx, pred_labels, pred_num)
+    #np.savetxt(opath[:-4] + '_pr.txt', pred_labels, fmt="%d")
 
 
 if __name__ == '__main__':
     #print(o3d.__version__)
-    run_reindex('/home/hiko/Downloads/data/real/LSD_sixuegongyu_cut.obj', '/home/hiko/Workspace/Line2Plane/eval/RANSAC/build/out.vg')
+    #run_reindex('/home/hiko/Downloads/data/dispatch/other_ball1_line.obj', '/home/hiko/Downloads/output/other_ball1_line.vg')
+    #run_reindex('/home/hiko/Downloads/data/dispatch/Fig103_line.obj', '/home/hiko/Downloads/output/Fig103_line.vg')
+    #run_reindex('/home/hiko/Downloads/data/dispatch/toy_data2_line.obj', '/home/hiko/Downloads/output/toy_data2_line.vg')
+    #run_reindex('/home/hiko/Downloads/data/real/Line3D++_office_crop_line.obj','/home/hiko/Downloads/output/Line3D++_office_crop_line.vg')
+    run_reindex('/home/hiko/Downloads/data/real/LSD_sixuegongyu_cut_line.obj', '/home/hiko/Downloads/output/LSD_sixuegongyu_cut_line.vg')
