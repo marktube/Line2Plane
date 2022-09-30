@@ -4,6 +4,7 @@ import colorsys
 import numpy as np
 from sklearn import metrics
 from scipy.spatial import Delaunay
+from matplotlib import pyplot as plt
 #import math
 from scipy.spatial.transform import Rotation as R
 from database import COLMAPDatabase
@@ -483,11 +484,12 @@ def npz2Text(fpath):
     npz_items = os.listdir(npz_path)
     npz_items.sort()
 
+    image_path = os.path.join(fpath, 'images')
     quaternions = []
     translations = []
     intrinsicses = []
 
-    for i in npz_items:
+    for i in npz_items[:2]:
         '''
                 K:  3x3 camera intrinsics
                 P: 3x4 K @ Rt
@@ -498,14 +500,23 @@ def npz2Text(fpath):
                 edge: Nx3, (idx1,idx2,if_vis) , idx1/idx2: index of junction, if_vis(bool): if this edge is visible or not
                 edgeWireframeIdx: edge corresponding to the gt wireframe edge index
         '''
-        data = np.load(os.path.join(npz_path,i))
+        data = np.load(os.path.join(npz_path, i))
+        '''for k in data.keys():
+            print(k,data[k].shape)
+            print(data[k])'''
+        junc2D = data['junc2D']
+        plt.figure()
+        im = plt.imread(os.path.join(image_path,i[:-3]+'png'))
+        plt.imshow(im)
+        plt.scatter(junc2D[:,0],junc2D[:,1])
+        plt.show()
+
+        '''data = np.load(os.path.join(npz_path,i))
         intrinsics = data['K']
         intrinsicses.append(intrinsics)
         #print(f'K {intrinsics.shape}\n{intrinsics}')
-        '''
-        colmap使用的cv系，对应的图像坐标系统为x向右，y向下。
-        blender实验的cg系，对应的图像坐标系统为x向右，y向上。
-        '''
+
+
         R_bcam2cv = np.array([[1, 0, 0, 0], [0, -1, 0, 0], [0, 0, -1, 0], [0, 0, 0, 1]])
         Rt = data['Rt'] @ R_bcam2cv
         print(f'Rt {Rt.shape}\n{Rt}')
@@ -526,15 +537,16 @@ def npz2Text(fpath):
     colmap_db = COLMAPDatabase.connect(os.path.join(fpath, 'database.db'))
     colmap_db.create_tables()
 
+    camera_id = colmap_db.add_camera(1, intrinsicses[0][0][2] * 2, intrinsicses[0][1][2] * 2, np.array((intrinsicses[0][0][0], intrinsicses[0][1][1], intrinsicses[0][0][2], intrinsicses[0][1][2])))
+
     # write cameras.txt
     with open(os.path.join(sparse_path, 'cameras.txt'), 'w') as f:
         f.write('# Camera list with one line of data per camera:\n')
         f.write('#   CAMERA_ID, MODEL, WIDTH, HEIGHT, PARAMS[]\n')
-        f.write(f'# Number of cameras: {len(npz_items)}\n')
-        for i in range(len(npz_items)):
-            f.write(f'{i+1} PINHOLE {int(intrinsicses[i][0][2]*2)} {int(intrinsicses[i][1][2]*2)} {intrinsicses[i][0][0]} {intrinsicses[i][1][1]} {int(intrinsicses[i][0][2])} {int(intrinsicses[i][1][2])}\n')
-            camera_id = colmap_db.add_camera(1, intrinsicses[i][0][2]*2, intrinsicses[i][1][2]*2, np.array((intrinsicses[i][0][0], intrinsicses[i][1][1], intrinsicses[i][0][2], intrinsicses[i][1][2])))
-            colmap_db.add_image(npz_items[i][:-3] + "png", camera_id, quaternions[i], translations[i])
+        f.write(f'# Number of cameras: {1}\n')
+        #for i in range(len(npz_items)):
+        f.write(f'{camera_id} PINHOLE {int(intrinsicses[0][0][2]*2)} {int(intrinsicses[0][1][2]*2)} {intrinsicses[0][0][0]} {intrinsicses[0][1][1]} {int(intrinsicses[0][0][2])} {int(intrinsicses[0][1][2])}\n')
+
 
     # write image.txt
     with open(os.path.join(sparse_path, 'images.txt'), 'w') as f:
@@ -542,11 +554,11 @@ def npz2Text(fpath):
         f.write('#   IMAGE_ID, QW, QX, QY, QZ, TX, TY, TZ, CAMERA_ID, NAME\n')
         f.write(f'# Number of images: {len(npz_items)}\n')
         for i in range(len(npz_items)):
-            f.write(f'{i + 1} {quaternions[i][0]} {quaternions[i][1]} {quaternions[i][2]} {quaternions[i][3]} {translations[i][0]} {translations[i][1]} {translations[i][2]} {i+1} {npz_items[i][:-3] + "png"}\n\n')
-
+            f.write(f'{i + 1} {quaternions[i][0]} {quaternions[i][1]} {quaternions[i][2]} {quaternions[i][3]} {translations[i][0]} {translations[i][1]} {translations[i][2]} {camera_id} {npz_items[i][:-3] + "png"}\n\n')
+            colmap_db.add_image(npz_items[i][:-3] + "png", camera_id, quaternions[i], translations[i])
 
     colmap_db.commit()
-    colmap_db.close()
+    colmap_db.close()'''
 
 if __name__ == '__main__':
     '''combineVg('/home/hiko/Workspace/Line2Plane/data/Barn+haoyu_cut6_7.vg',

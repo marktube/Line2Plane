@@ -174,6 +174,13 @@ class COLMAPDatabase(sqlite3.Connection):
              prior_focal_length))
         return cursor.lastrowid
 
+    def update_camera(self, model, width, height, params, camera_id):
+        params = np.asarray(params, np.float64)
+        cursor = self.execute(
+            "UPDATE cameras SET model=?, width=?, height=?, params=?, prior_focal_length=1 WHERE camera_id=?",
+            (model, width, height, array_to_blob(params), camera_id))
+        return cursor.lastrowid
+
     def add_image(self, name, camera_id,
                   prior_q=np.full(4, np.NaN), prior_t=np.full(3, np.NaN), image_id=None):
         cursor = self.execute(
