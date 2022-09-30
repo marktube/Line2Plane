@@ -4,6 +4,9 @@ import colorsys
 import numpy as np
 from sklearn import metrics
 from scipy.spatial import Delaunay
+#import math
+from scipy.spatial.transform import Rotation as R
+from database import COLMAPDatabase
 '''
 Unless you pass in the Qhull option “QJ”, 
 Qhull does not guarantee that each input point appears as 
@@ -378,6 +381,9 @@ def computeClusterIndex(fpath):
     db_label = np.loadtxt(fpath[:-6]+'line_db.txt', dtype=int)
     ms_label = np.loadtxt(fpath[:-6]+'line_ms.txt', dtype=int)
     ransac_label = np.loadtxt(fpath[:-6]+'line_ransac.txt', dtype=int)
+    hc_label = np.loadtxt(fpath[:-6]+'line_hc.txt', dtype=int)
+    glob_label = np.loadtxt(fpath[:-6]+'line_glob.txt', dtype=int)
+    pr_label = np.loadtxt(fpath[:-6]+'line_pr.txt', dtype=int)
     ours_label = np.loadtxt(fpath[:-6] + 'line_ours.txt', dtype=int)
     print(type(ms_label[0]))
     db_ri = metrics.rand_score(gt_label, db_label)
@@ -386,6 +392,12 @@ def computeClusterIndex(fpath):
     ms_nmi = metrics.normalized_mutual_info_score(gt_label, ms_label)
     ransac_ri = metrics.rand_score(gt_label, ransac_label)
     ransac_nmi = metrics.normalized_mutual_info_score(gt_label, ransac_label)
+    hc_ri = metrics.rand_score(gt_label, hc_label)
+    hc_nmi = metrics.normalized_mutual_info_score(gt_label, hc_label)
+    glob_ri = metrics.rand_score(gt_label, glob_label)
+    glob_nmi = metrics.normalized_mutual_info_score(gt_label, glob_label)
+    pr_ri = metrics.rand_score(gt_label, pr_label)
+    pr_nmi = metrics.normalized_mutual_info_score(gt_label, pr_label)
     ours_ri = metrics.rand_score(gt_label, ours_label)
     ours_nmi = metrics.normalized_mutual_info_score(gt_label, ours_label)
 
@@ -400,6 +412,15 @@ def computeClusterIndex(fpath):
         f.write('RANSAC Prediction Number: %d\n' % (np.max(ransac_label) + 2))
         f.write('RANSAC Rand Index: %f\n' % ransac_ri)
         f.write('RANSAC Normalized Mutual Index: %f\n' % ransac_nmi)
+        f.write('Hierarchical Clustering Prediction Number: %d\n' % (np.max(hc_label) + 2))
+        f.write('Hierarchical Clustering Rand Index: %f\n' % hc_ri)
+        f.write('Hierarchical Clustering Normalized Mutual Index: %f\n' % hc_nmi)
+        f.write('Globfit Prediction Number: %d\n' % (np.max(glob_label) + 2))
+        f.write('Globfit Rand Index: %f\n' % glob_ri)
+        f.write('Globfit Normalized Mutual Index: %f\n' % glob_nmi)
+        f.write('PR15\' Prediction Number: %d\n' % (np.max(pr_label) + 2))
+        f.write('PR15\' Rand Index: %f\n' % pr_ri)
+        f.write('PR15\' Normalized Mutual Index: %f\n' % pr_nmi)
         f.write('Ours Prediction Number: %d\n' % (np.max(ours_label) + 1))
         f.write('Ours Rand Index: %f\n' % ours_ri)
         f.write('Ours Normalized Mutual Index: %f\n' % ours_nmi)
@@ -457,6 +478,75 @@ def globfit2vg(fpath):
             fo.write("\n")
             fo.write("num_children: 0\n")
 
+def npz2Text(fpath):
+    npz_path = os.path.join(fpath, 'npz')
+    npz_items = os.listdir(npz_path)
+    npz_items.sort()
+
+    quaternions = []
+    translations = []
+    intrinsicses = []
+
+    for i in npz_items:
+        '''
+                K:  3x3 camera intrinsics
+                P: 3x4 K @ Rt
+                Rt: 3x4 , 3x3: rotation matrix, 3x1: transform matrix
+                junc2D: N x 2 , 2D junctions in images
+                junc3D_cam: N x 3, 3D junctions in camera coord system
+                junc3D_world: N x 3, 3D junctions in world coord system
+                edge: Nx3, (idx1,idx2,if_vis) , idx1/idx2: index of junction, if_vis(bool): if this edge is visible or not
+                edgeWireframeIdx: edge corresponding to the gt wireframe edge index
+        '''
+        data = np.load(os.path.join(npz_path,i))
+        intrinsics = data['K']
+        intrinsicses.append(intrinsics)
+        #print(f'K {intrinsics.shape}\n{intrinsics}')
+        '''
+        colmap使用的cv系，对应的图像坐标系统为x向右，y向下。
+        blender实验的cg系，对应的图像坐标系统为x向右，y向上。
+        '''
+        R_bcam2cv = np.array([[1, 0, 0, 0], [0, -1, 0, 0], [0, 0, -1, 0], [0, 0, 0, 1]])
+        Rt = data['Rt'] @ R_bcam2cv
+        print(f'Rt {Rt.shape}\n{Rt}')
+        i_R = Rt[:,:3].T
+        i_T = -i_R @ Rt[:, 3]
+        print(f'R {i_R.shape}\n{i_R}')
+        print(f'T {i_T.shape}\n{i_T}')
+        qua = R.from_matrix(i_R).as_quat()
+        #test = R.from_quat(qua).as_matrix()
+        print(f'quaternion {qua.shape}\n{qua}')
+        #print(f'inverse matrix {test.shape}\n{test}')
+        quaternions.append(qua)
+        translations.append(i_T)
+
+    sparse_path = os.path.join(fpath, 'sparse')
+
+    # create db
+    colmap_db = COLMAPDatabase.connect(os.path.join(fpath, 'database.db'))
+    colmap_db.create_tables()
+
+    # write cameras.txt
+    with open(os.path.join(sparse_path, 'cameras.txt'), 'w') as f:
+        f.write('# Camera list with one line of data per camera:\n')
+        f.write('#   CAMERA_ID, MODEL, WIDTH, HEIGHT, PARAMS[]\n')
+        f.write(f'# Number of cameras: {len(npz_items)}\n')
+        for i in range(len(npz_items)):
+            f.write(f'{i+1} PINHOLE {int(intrinsicses[i][0][2]*2)} {int(intrinsicses[i][1][2]*2)} {intrinsicses[i][0][0]} {intrinsicses[i][1][1]} {int(intrinsicses[i][0][2])} {int(intrinsicses[i][1][2])}\n')
+            camera_id = colmap_db.add_camera(1, intrinsicses[i][0][2]*2, intrinsicses[i][1][2]*2, np.array((intrinsicses[i][0][0], intrinsicses[i][1][1], intrinsicses[i][0][2], intrinsicses[i][1][2])))
+            colmap_db.add_image(npz_items[i][:-3] + "png", camera_id, quaternions[i], translations[i])
+
+    # write image.txt
+    with open(os.path.join(sparse_path, 'images.txt'), 'w') as f:
+        f.write('# Image list with two lines of data per image:\n')
+        f.write('#   IMAGE_ID, QW, QX, QY, QZ, TX, TY, TZ, CAMERA_ID, NAME\n')
+        f.write(f'# Number of images: {len(npz_items)}\n')
+        for i in range(len(npz_items)):
+            f.write(f'{i + 1} {quaternions[i][0]} {quaternions[i][1]} {quaternions[i][2]} {quaternions[i][3]} {translations[i][0]} {translations[i][1]} {translations[i][2]} {i+1} {npz_items[i][:-3] + "png"}\n\n')
+
+
+    colmap_db.commit()
+    colmap_db.close()
 
 if __name__ == '__main__':
     '''combineVg('/home/hiko/Workspace/Line2Plane/data/Barn+haoyu_cut6_7.vg',
@@ -479,7 +569,7 @@ if __name__ == '__main__':
     genLines(1, prefix1)
     genLines(1, prefix2)
     genLines(1, prefix3)'''
-    #computeClusterIndex('/home/hiko/Downloads/data/dispatch/Fig103_gt.txt')
+    #computeClusterIndex('/home/hiko/Downloads/data/dispatch/toy_data2_gt.txt')
     '''prefix1 = '/home/hiko/Downloads/data/dispatch/Fig10'
     genLines(3, prefix1)'''
     #vg2globfit('/home/hiko/Downloads/data/real/LSD_sixuegongyu_cut_glob.vg')
@@ -491,4 +581,5 @@ if __name__ == '__main__':
     #globfit2vg('/home/hiko/Downloads/data/real/Line3D++_office_crop_glob_ea.globfit')
     #globfit2vg('/home/hiko/Downloads/data/dispatch/Fig103_line_glob_ea.globfit')
     #globfit2vg('/home/hiko/Downloads/data/dispatch/other_ball1_line_glob_ea.globfit')
-    globfit2vg('/home/hiko/Downloads/data/dispatch/toy_data2_line_glob_ea.globfit')
+    #globfit2vg('/home/hiko/Downloads/data/dispatch/toy_data2_line_glob_ea.globfit')
+    npz2Text('/home/hiko/Workspace/Line2Plane/data/BK39_500_002053_0011')
