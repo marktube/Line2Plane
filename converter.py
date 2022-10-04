@@ -25,6 +25,16 @@ def get_colors(num_colors):
         colors.append(colorsys.hls_to_rgb(hue, lightness, saturation))
     return np.array(colors)
 
+def png2jpg(path_prefix):
+    filenames = os.listdir(path_prefix)
+    print(len(filenames))
+    for pngi in filenames:
+        infile = os.path.join(path_prefix, pngi)
+        outfile = infile[:-3] + 'jpg'
+        im = Image.open(infile)
+        im = im.convert('RGB')
+        im.save(outfile, quality=95)
+
 def format2jpg(path_prefix):
     filenames = os.listdir(path_prefix)
     print(len(filenames))
@@ -497,7 +507,7 @@ def npz2Text(fpath):
     translations = []
     intrinsicses = []
 
-    test = []
+    #test = []
 
     for i in npz_items:
         '''
@@ -571,7 +581,7 @@ def npz2Text(fpath):
                                                 np.array((intrinsicses[i][2], intrinsicses[i][3],
                                                           intrinsicses[i][4], intrinsicses[i][5])), i + 1)
             f.write(
-                f'{i + 1} {quaternions[i][0]} {quaternions[i][1]} {quaternions[i][2]} {quaternions[i][3]} {translations[i][0]} {translations[i][1]} {translations[i][2]} {i+1} {npz_items[i][:-3] + "png"}\n\n')
+                f'{i + 1} {quaternions[i][0]} {quaternions[i][1]} {quaternions[i][2]} {quaternions[i][3]} {translations[i][0]} {translations[i][1]} {translations[i][2]} {i+1} {npz_items[i][:-3] + "jpg"}\n\n')
             #colmap_db.add_image(npz_items[i][:-3] + "png", camera_id, quaternions[i], translations[i])
 
     colmap_db.commit()
@@ -611,4 +621,5 @@ if __name__ == '__main__':
     #globfit2vg('/home/hiko/Downloads/data/dispatch/Fig103_line_glob_ea.globfit')
     #globfit2vg('/home/hiko/Downloads/data/dispatch/other_ball1_line_glob_ea.globfit')
     #globfit2vg('/home/hiko/Downloads/data/dispatch/toy_data2_line_glob_ea.globfit')
+    #png2jpg('/home/hiko/Workspace/Line2Plane/data/BK39_500_002053_0011/images')
     npz2Text('/home/hiko/Workspace/Line2Plane/data/BK39_500_002053_0011')
