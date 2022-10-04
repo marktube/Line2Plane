@@ -5,8 +5,7 @@ import numpy as np
 from sklearn import metrics
 from scipy.spatial import Delaunay
 from matplotlib import pyplot as plt
-#import math
-from scipy.spatial.transform import Rotation as R
+import math
 from database import COLMAPDatabase
 '''
 Unless you pass in the Qhull option “QJ”, 
@@ -479,17 +478,28 @@ def globfit2vg(fpath):
             fo.write("\n")
             fo.write("num_children: 0\n")
 
+def mat2q(R):
+    q0 = 0.5 * math.sqrt(1 + R[0, 0] + R[1, 1] + R[2, 2])
+    q1 = (R[2, 1] - R[1, 2]) / (4 * q0)
+    q2 = (R[0, 2] - R[2, 0]) / (4 * q0)
+    q3 = (R[1, 0] - R[0, 1]) / (4 * q0)
+    return np.array([q0,q1,q2,q3])
+
+
 def npz2Text(fpath):
     npz_path = os.path.join(fpath, 'npz')
     npz_items = os.listdir(npz_path)
     npz_items.sort()
+    print(npz_items)
 
-    image_path = os.path.join(fpath, 'images')
+    #image_path = os.path.join(fpath, 'images')
     quaternions = []
     translations = []
     intrinsicses = []
 
-    for i in npz_items[:2]:
+    test = []
+
+    for i in npz_items:
         '''
                 K:  3x3 camera intrinsics
                 P: 3x4 K @ Rt
@@ -500,53 +510,56 @@ def npz2Text(fpath):
                 edge: Nx3, (idx1,idx2,if_vis) , idx1/idx2: index of junction, if_vis(bool): if this edge is visible or not
                 edgeWireframeIdx: edge corresponding to the gt wireframe edge index
         '''
-        data = np.load(os.path.join(npz_path, i))
-        '''for k in data.keys():
+        '''data = np.load(os.path.join(npz_path, i))
+        for k in data.keys():
             print(k,data[k].shape)
-            print(data[k])'''
+            print(data[k])
         junc2D = data['junc2D']
         plt.figure()
         im = plt.imread(os.path.join(image_path,i[:-3]+'png'))
-        plt.imshow(im)
+        #plt.imshow(im)
         plt.scatter(junc2D[:,0],junc2D[:,1])
-        plt.show()
+        plt.show()'''
 
-        '''data = np.load(os.path.join(npz_path,i))
+        '''junc3D_world = data['junc3D_world']
+        np.savetxt(os.path.join(fpath, i[:-3]+'xyz'), junc3D_world)'''
+
+        data = np.load(os.path.join(npz_path,i))
         intrinsics = data['K']
-        intrinsicses.append(intrinsics)
-        #print(f'K {intrinsics.shape}\n{intrinsics}')
+        # format H W fx fy cx cy
+        intrinsicses.append(np.array([intrinsics[0][2]*2, intrinsics[1][2]*2, intrinsics[0][0],intrinsics[1][1],intrinsics[0][2], intrinsics[1][2]]))
+        print(f'K {intrinsics.shape}\n{intrinsics}')
 
 
-        R_bcam2cv = np.array([[1, 0, 0, 0], [0, -1, 0, 0], [0, 0, -1, 0], [0, 0, 0, 1]])
-        Rt = data['Rt'] @ R_bcam2cv
+        #R_bcam2cv = np.diag([1,-1,-1])
+        Rt = data['Rt']
         print(f'Rt {Rt.shape}\n{Rt}')
-        i_R = Rt[:,:3].T
-        i_T = -i_R @ Rt[:, 3]
+        #test.append(Rt[:,3])
+        i_R = Rt[:,:3]
+        i_T = Rt[:, 3]
         print(f'R {i_R.shape}\n{i_R}')
         print(f'T {i_T.shape}\n{i_T}')
-        qua = R.from_matrix(i_R).as_quat()
+        qua = mat2q(i_R)
         #test = R.from_quat(qua).as_matrix()
-        print(f'quaternion {qua.shape}\n{qua}')
+        #print(f'quaternion {qua.shape}\n{qua}')
         #print(f'inverse matrix {test.shape}\n{test}')
         quaternions.append(qua)
         translations.append(i_T)
 
     sparse_path = os.path.join(fpath, 'sparse')
+    #np.savetxt(os.path.join(fpath,'cam_pos.xyz'),test)
 
-    # create db
+    # connect db
     colmap_db = COLMAPDatabase.connect(os.path.join(fpath, 'database.db'))
-    colmap_db.create_tables()
-
-    camera_id = colmap_db.add_camera(1, intrinsicses[0][0][2] * 2, intrinsicses[0][1][2] * 2, np.array((intrinsicses[0][0][0], intrinsicses[0][1][1], intrinsicses[0][0][2], intrinsicses[0][1][2])))
 
     # write cameras.txt
     with open(os.path.join(sparse_path, 'cameras.txt'), 'w') as f:
         f.write('# Camera list with one line of data per camera:\n')
         f.write('#   CAMERA_ID, MODEL, WIDTH, HEIGHT, PARAMS[]\n')
         f.write(f'# Number of cameras: {1}\n')
-        #for i in range(len(npz_items)):
-        f.write(f'{camera_id} PINHOLE {int(intrinsicses[0][0][2]*2)} {int(intrinsicses[0][1][2]*2)} {intrinsicses[0][0][0]} {intrinsicses[0][1][1]} {int(intrinsicses[0][0][2])} {int(intrinsicses[0][1][2])}\n')
-
+        for i in range(len(npz_items)):
+            f.write(
+                f'{i+1} PINHOLE {int(intrinsicses[i][0])} {int(intrinsicses[i][1])} {intrinsicses[i][2]} {intrinsicses[i][3]} {intrinsicses[i][4]} {intrinsicses[i][5]}\n')
 
     # write image.txt
     with open(os.path.join(sparse_path, 'images.txt'), 'w') as f:
@@ -554,11 +567,15 @@ def npz2Text(fpath):
         f.write('#   IMAGE_ID, QW, QX, QY, QZ, TX, TY, TZ, CAMERA_ID, NAME\n')
         f.write(f'# Number of images: {len(npz_items)}\n')
         for i in range(len(npz_items)):
-            f.write(f'{i + 1} {quaternions[i][0]} {quaternions[i][1]} {quaternions[i][2]} {quaternions[i][3]} {translations[i][0]} {translations[i][1]} {translations[i][2]} {camera_id} {npz_items[i][:-3] + "png"}\n\n')
-            colmap_db.add_image(npz_items[i][:-3] + "png", camera_id, quaternions[i], translations[i])
+            colmap_db.update_camera(1, int(intrinsicses[i][0]), int(intrinsicses[i][1]),
+                                                np.array((intrinsicses[i][2], intrinsicses[i][3],
+                                                          intrinsicses[i][4], intrinsicses[i][5])), i + 1)
+            f.write(
+                f'{i + 1} {quaternions[i][0]} {quaternions[i][1]} {quaternions[i][2]} {quaternions[i][3]} {translations[i][0]} {translations[i][1]} {translations[i][2]} {i+1} {npz_items[i][:-3] + "png"}\n\n')
+            #colmap_db.add_image(npz_items[i][:-3] + "png", camera_id, quaternions[i], translations[i])
 
     colmap_db.commit()
-    colmap_db.close()'''
+    colmap_db.close()
 
 if __name__ == '__main__':
     '''combineVg('/home/hiko/Workspace/Line2Plane/data/Barn+haoyu_cut6_7.vg',
@@ -573,7 +590,7 @@ if __name__ == '__main__':
     #wire2line('/home/hiko/Downloads/LineData/LSD_office.obj')
     #wire2line('/home/hiko/Downloads/data/real/LSD_sixuegongyu_cut.obj')
     #wire2line('/home/hiko/Downloads/data/real/Line3D++_office_crop.obj')
-    #format2jpg('/home/hiko/Workspace/11_1lines/Andalusian/images')
+    #format2jpg('/home/hiko/Workspace/Line2Plane/data/BK39_500_002053_0011/images')
 
     '''prefix1 = '/home/hiko/Downloads/data/dispatch/Fig10'
     prefix2 = '/home/hiko/Downloads/data/dispatch/toy_data'
