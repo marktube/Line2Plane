@@ -621,5 +621,5 @@ if __name__ == '__main__':
     #globfit2vg('/home/hiko/Downloads/data/dispatch/Fig103_line_glob_ea.globfit')
     #globfit2vg('/home/hiko/Downloads/data/dispatch/other_ball1_line_glob_ea.globfit')
     #globfit2vg('/home/hiko/Downloads/data/dispatch/toy_data2_line_glob_ea.globfit')
-    #png2jpg('/home/hiko/Workspace/Line2Plane/data/BJ39_500_098050_0009/images')
-    npz2Text('/home/hiko/Workspace/Line2Plane/data/BJ39_500_098050_0009')
+    #png2jpg('/home/hiko/Workspace/Line2Plane/data/BK39_500_001048_0016/images')
+    npz2Text('/home/hiko/Workspace/Line2Plane/data/BK39_500_001048_0016')
