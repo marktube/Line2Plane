@@ -8,8 +8,8 @@ sys.path.append(os.path.join(BASE_DIR, 'models'))
 from models.LScene import LScene
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--volume', type=int, default=17, help='Volumes to use [default: volume 2]')
-parser.add_argument('--line_data', default='/home/hiko/Workspace/Line2Plane/data/BJ39_500_100048_0045/3dline_uncluster_song_cut.obj', help='Line data input filepath [default: ]')
+parser.add_argument('--volume', type=int, default=7, help='Volumes to use [default: volume 2]')
+parser.add_argument('--line_data', default='/home/hiko/Workspace/Line2Plane/data/BK39_500_002053_0011/3dlines_uncluster_song_cut.obj', help='Line data input filepath [default: ]')
 parser.add_argument('--out', default='', help='Line data output filepath [default: {input filepath_[volume]}.vg]')
 parser.add_argument('--gui', default='true', help='true or false for showing graphic result [default: false]')
 parser.add_argument('--sr', default=1.0, help='sigma ratio can control the variance [default: 1.0]')
