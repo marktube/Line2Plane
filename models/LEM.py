@@ -144,5 +144,5 @@ class LEM:
         rev_dict = dict(zip(label,np.arange(len(label))))
         cluster_id = [rev_dict[i] for i in cluster_id]
         d = -np.sum(self.f_v*self.f_n, axis=1)
-        planes = np.column_stack((self.f_v, d))
+        planes = np.column_stack((self.f_n, d))
         return planes[label,:], np.array(cluster_id, dtype=int)
