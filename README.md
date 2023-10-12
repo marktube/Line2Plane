@@ -2,7 +2,7 @@
 
 ### Overview
 ![](data/Barn_cluster.png)
-This is the code repository implementing the "plane reconstruction from 3D lines" part of the paper "Surface Reconstruction from Multi-view Line Cloud".
+This is the code repository implementing the "plane reconstruction from 3D lines" part of the paper "Line-based 3D Building Abstraction and Polygonal Surface Reconstruction from Images".
 
 ### Input
 3D line segments set, obj file.
